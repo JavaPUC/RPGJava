@@ -1,4 +1,4 @@
-public class Item extends Cloneable {
+public class Item implements Cloneable {
     private int id;
     private String nome;
     private String descricao;
@@ -60,14 +60,13 @@ public class Item extends Cloneable {
         setQtd(qtd);
     }
 
-    
+    public void ballsofsteel() {
+        System.out.println("Balls of Steel");
+    }
 
 
     @Override 
     public int hashCode() {
 
     }
-
-    @Override 
-    public boolean
 }
