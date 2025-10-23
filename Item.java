@@ -1,4 +1,4 @@
-public class Item implements Cloneable {
+public class Item{
     private int id;
     private String nome;
     private String descricao;
@@ -67,6 +67,6 @@ public class Item implements Cloneable {
 
     @Override 
     public int hashCode() {
-
+        return id;
     }
 }

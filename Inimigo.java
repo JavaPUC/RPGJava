@@ -7,5 +7,7 @@ public class Inimigo extends Personagem {
      * Escaravelho gigante
      * Falcão-peregrino
      * Balança rabo-leitoso gigante
+     * Camponês revoltado
+     * Cultista
      */
 }
