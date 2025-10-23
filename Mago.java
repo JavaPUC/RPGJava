@@ -12,10 +12,10 @@ public class Mago extends Personagem {
     public void setMana(int mana) {
         this.mana = mana;
     }
-
-    public Mago(String nome, double hp, double atk, double def, int xp, int lvl, double multLvlUp, int mana) {
+    public Mago(String nome, double hp, double atk, double def, int xp, int lvl, int mana) {
         setNome(nome);
         setHp(hp);
+        setMaxHp(hp);
         setAtk(atk);
         setDef(def);
         setXp(0);
@@ -43,9 +43,11 @@ public class Mago extends Personagem {
         Spell spell = chooseSpell(op);
         String nome = spell.getNome();
         int rolls = spell.getRolls();
+        
         System.out.println(this.nome + " lançou " + nome + ".");
         if (!verifMana(spell)) {
             System.out.println("Sem mana para castar o feitiço.");
+            return;
         }
         switch (nome) {
             case "Meditação":
@@ -60,7 +62,6 @@ public class Mago extends Personagem {
                 System.out.println(
                         this.nome + " recuperou " + manaRecuperada + " de mana e agora tem " + this.mana + " de mana.");
                 break;
-            // Caso seja "Meditação", recupera mana e retorna sem causar dano.
 
             case "Perturbação da Alma":
                 System.out.println(
@@ -71,13 +72,12 @@ public class Mago extends Personagem {
                 break;
 
             case "Demônio Escarlate":
-                if (this.getHp() < this.getHp() * 0.1 && medit) { // abaixo de 10% da vida e com meditação
+                if (this.getHp() < this.getMaxHp()* 0.1 && medit) {
                     rolls = 4;
                     dano = rollDie(spell, rolls) + atk;
                     alvo.setHp(alvo.getHp() - dano);
-                } else if (this.getHp() < this.getHp() * 0.1 && !medit) { // abaixo de 10% da vida mas sem meditação
-
-                    dice.setSides(spell.getSides2()); // 12
+                } else if (this.getHp() < this.getHp() * 0.1 && !medit) {
+                    dice.setSides(spell.getSides2());
                     rolls = 4;
                     for (int i = 0; i < rolls; i++) {
                         dano += dice.roll();
@@ -86,18 +86,20 @@ public class Mago extends Personagem {
                     dano -= alvo.getDef();
                     this.setHp(dano * 0.2);
                     alvo.setHp(alvo.getHp() - dano);
-                } else { // nenhuma condição
+                } else {
                     if (verifMana(spell)) {
                         dano = calcDmgDef(spell, rolls, alvo);
-                        alvo.setHp(getHp() - dano);
+                        alvo.setHp(alvo.getHp() - dano);
                     }
                 }
+                break;
+
             case "Barragem de Esmeraldas":
-                if (this.getHp() < this.getHp() * 0.05) {
+                if (this.getHp() < this.getMaxHp() * 0.05) {
                     dano = rollDie(spell, rolls);
                     dano = dano * 4;
                     dano -= alvo.getDef();
-                    alvo.setHp(getHp() - dano);
+                    alvo.setHp(alvo.getHp() - dano);
                     if (alvo.getHp() <= 0) {
                         this.setHp(1);
                     } else {
@@ -107,6 +109,7 @@ public class Mago extends Personagem {
                     dano = calcDmgDef(spell, rolls, alvo);
                     alvo.setHp(alvo.getHp() - dano);
                 }
+                break;
 
             case "Pandemonium":
                 dice.setSides(20);
@@ -114,11 +117,13 @@ public class Mago extends Personagem {
                 if (dc < 14) {
                     rolls = 3;
                     dano = calcDmgDef(spell, rolls, alvo);
-                    alvo.setHp(getHp() - dano);
+                    alvo.setHp(alvo.getHp() - dano);
                 } else {
                     dano = calcDmgDef(spell, rolls, alvo);
-                    alvo.setHp(getHp() - dano);
+                    alvo.setHp(alvo.getHp() - dano);
                 }
+                break;
+
             case "Catapulta":
                 if (!this.inventario.isEmpty()) {
                     int randomIndex = (int) (Math.random() * this.inventario.getItems().length);
@@ -127,33 +132,37 @@ public class Mago extends Personagem {
                     System.out.println(
                             this.nome + " usou Catapulta e removeu " + randomItem.getNome() + " do inventário.");
                     dano = calcDmgDef(spell, rolls, alvo);
-                    alvo.setHp(randomIndex);
+                    alvo.setHp(alvo.getHp() - dano);
                 } else {
                     System.out.println(this.nome + " tentou usar Catapulta, mas o inventário está vazio.");
                 }
-            
+                break;
+
             case "Heresia":
                 dano = rollDie(spell, rolls);
-                alvo.setHp(getHp() - dano);
+                alvo.setHp(alvo.getHp() - dano);
+                break;
+
             case "Rosso Phantasma":
                 int clones = (int) rollDie(spell, rolls);
-                for (int i = 0; i < clones; i ++) {
+                for (int i = 0; i < clones; i++) {
                     dano += calcDmgDef(spell, rolls, alvo);
                 }
                 alvo.setHp(alvo.getHp() - dano);
-                default:
+                break;
+
+            default:
                 if (verifMana(spell)) {
                     dice.setSides(spell.getSides());
                     dano = calcDmgDef(spell, rolls, alvo);
-                    System.out.println("Causou " + dano + " de dano.");
+                    
                     alvo.setHp(alvo.getHp() - dano);
                 } else {
                     System.out.println(this.nome + " não tem mana suficiente para lançar " + spell.getNome() + ".");
                 }
                 break;
-            // Em outros casos, aplica o dano normalmente considerando a defesa do alvo.
         }
-
+        System.out.println("Causou " + dano + " de dano.");
     }
 
     public void listaSpell() {

@@ -1,11 +1,13 @@
 public abstract class Personagem {
     protected String nome;
     protected double hp;
+    protected double maxHp;
     protected double atk;
     protected double def;
     protected int xp;
     protected int lvl; //100 xp = 1 lvl, aumento de 25% a cada lvl.
     protected double multLvlUp; //multiplicador de aumento de status a cada lvl
+    protected Dice dice = new Dice(4);
     protected Inventario inventario;
 
     public String getNome() {
@@ -22,6 +24,14 @@ public abstract class Personagem {
 
     public void setHp(double hp) {
         this.hp = hp;
+    }
+
+    public double getMaxHp() {
+        return maxHp;
+    }
+
+    public void setMaxHp(double maxHp) {
+        this.maxHp = maxHp;
     }
 
     public double getAtk() {
@@ -63,6 +73,14 @@ public abstract class Personagem {
 
     public void setInventario(Inventario inventario) {
         this.inventario = inventario;
+    }
+
+    public Dice getDice() {
+        return dice;
+    }
+
+    public void setDice(Dice dice) {
+        this.dice = dice;
     }
 
     public abstract void lvlUp();

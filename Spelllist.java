@@ -2,6 +2,7 @@ public class Spelllist {
     private Spell[] spells;
 
     public Spelllist() {
+        spells = new Spell[11];
         spells[0] = new Spell("Bola de Fogo",
                 "Dano: 1d6 + atk",
                 50,
