@@ -6,7 +6,7 @@ public class Jogo {
     private Personagem jogador;
     private Random random;
     private Scanner scanner;
-    private Inimigo[] inimigos; // Declare inimigos as a class-level field
+    private Inimigo[] inimigos; 
 
     public int getClasse() {
         return classe;
@@ -112,7 +112,7 @@ public class Jogo {
                 int index = random.nextInt(9);
 
                 System.out.println("Você encontrou um inimigo!");
-                batalhar(inimigos[8]); // Supondo que você tenha uma classe Inimigo
+                batalhar(inimigos[8]); 
                 break;
             case 1:
                 System.out.println("Nada aconteceu.");
@@ -175,7 +175,7 @@ public class Jogo {
                     System.out.println("[4] Usar item");
                     System.out.println("[5] Tentar fugir");
                     int acao = scanner.nextInt();
-                    scanner.nextLine(); // Consumir a quebra de linha
+                    scanner.nextLine();
                     if (acao == 1) {
                         jogador.atacar(inimigo);
                     } else if (acao == 2) {
@@ -185,7 +185,6 @@ public class Jogo {
                         ((Mago) jogador).listaSpell();
                     } else if (acao == 4) {
                         System.out.println("Usando item...");
-                        // Lógica para usar item
                     } else if (acao == 5) {
                         System.out.println("Tentando fugir...");
                         int chanceFuga = random.nextInt(100);
@@ -211,10 +210,10 @@ public class Jogo {
             System.out.println("============================================================================");
             } else {
                 System.out.println("Inimigo ataca o jogador!");
-                jogador.setHp(jogador.getHp() - (10 + inimigo.getAtk())); // Exemplo de dano
+                jogador.setHp(jogador.getHp() - (10 + inimigo.getAtk())); 
             }
             
-            turnoJogador = !turnoJogador; // Alterna o turno
+            turnoJogador = !turnoJogador; 
             System.out.println("============================================================================");
             if (this.classe == 1) {
             System.out.println("||HP - " + this.jogador.getNome() + ": " + jogador.getHp() + " | HP - " + inimigo.getNome() + ": " + inimigo.getHp() + " || ");  
