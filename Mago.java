@@ -2,25 +2,17 @@ public class Mago extends Personagem {
     private int mana;
     private double dano;
     private Spelllist grimorio;
-    private Dice dice = new Dice(4);
     boolean medit = false;
 
-    public int getMana() {
-        return mana;
-    }
-
-    public void setMana(int mana) {
-        this.mana = mana;
-    }
-    public Mago(String nome, double hp, double atk, double def, int xp, int lvl, int mana) {
+    public Mago(String nome) {
         setNome(nome);
-        setHp(hp);
-        setMaxHp(hp);
-        setAtk(atk);
-        setDef(def);
+        setHp(100);
+        setMaxHp(100);
+        setAtk(6);
+        setDef(10);
         setXp(0);
         setLvl(1);
-        setMana(mana);
+        setMana(200);
         this.multLvlUp = 1.5;
         this.grimorio = new Spelllist();
         this.inventario = new Inventario();
@@ -31,9 +23,9 @@ public class Mago extends Personagem {
     public void atacar(Personagem alvo) {
         System.out.println(this.nome + " ataca" + alvo.getNome() + "com um ataque corpo-a-corpo.");
         dice.setSides(4);
-        double danoFisico = dice.roll() + this.getAtk();
+        dano = dice.roll() + this.getAtk();
         alvo.setHp(alvo.getHp() - dano);
-        System.out.println(alvo.getNome() + " recebeu " + danoFisico + ".");
+        System.out.println(alvo.getNome() + " recebeu " + dano + ".");
     }
 
     @Override

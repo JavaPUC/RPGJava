@@ -6,6 +6,7 @@ public abstract class Personagem {
     protected double def;
     protected int xp;
     protected int lvl; //100 xp = 1 lvl, aumento de 25% a cada lvl.
+    protected int mana;
     protected double multLvlUp; //multiplicador de aumento de status a cada lvl
     protected Dice dice = new Dice(4);
     protected Inventario inventario;
@@ -83,6 +84,13 @@ public abstract class Personagem {
         this.dice = dice;
     }
 
+    public int getMana() {
+        return mana;
+    }
+
+    public void setMana(int mana) {
+        this.mana = mana;
+    }
     public abstract void lvlUp();
 
     public abstract void atacar(Personagem alvo, int op); //interação com op para ataques que usam magia ou habilidades especiais.

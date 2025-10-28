@@ -35,7 +35,7 @@ public class Jogo {
         this.inimigos[5] = new Inimigo(6, "Balança Rabo-leitoso Gigante", 80, 8, 8, 3);
         this.inimigos[6] = new Inimigo(7, "Camponês Revoltado", 25, 5, 3, 1);
         this.inimigos[7] = new Inimigo(8, "Cultista", 60, 12, 5, 3);
-        this.inimigos[8] = new Inimigo(9, "???", 500, 30, 20, 10);
+        this.inimigos[8] = new Inimigo(9, "???", 500, 30, 40, 10);
 
         this.random = new Random();
         this.scanner = new Scanner(System.in);
@@ -54,7 +54,7 @@ public class Jogo {
 
             switch (classe) {
             case 1:
-                setJogador(new Mago(nome, 100, 6, 10, 0, 1, 500));
+                setJogador(new Mago(nome));
                 System.out.println("Você escolheu - Mago.");
                 escolhaValida = true;
                 break;
@@ -64,7 +64,7 @@ public class Jogo {
                 escolhaValida = true;
                 break;
             case 3:
-                this.jogador = new Guerreiro();
+                this.jogador = new Guerreiro(nome);
                 System.out.println("Você escolheu - Guerreiro.");
                 escolhaValida = true;
                 break;
