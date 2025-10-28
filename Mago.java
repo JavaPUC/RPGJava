@@ -29,7 +29,7 @@ public class Mago extends Personagem {
     }
 
     @Override
-    public void atacar(Personagem alvo, int op) {
+    public void habilidade(Personagem alvo, int op) {
         dano = 0;
         System.out.println(this.nome + " está atacando " + alvo.getNome() + " com magia.");
         Spell spell = chooseSpell(op);

@@ -93,7 +93,7 @@ public abstract class Personagem {
     }
     public abstract void lvlUp();
 
-    public abstract void atacar(Personagem alvo, int op); //interação com op para ataques que usam magia ou habilidades especiais.
+    public abstract void habilidade(Personagem alvo, int op); //interação com op para ataques que usam magia ou habilidades especiais.
     public abstract void atacar(Personagem alvo); //ataque físico padrão.
     public abstract void addToInv(Item item);
 

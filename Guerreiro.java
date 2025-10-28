@@ -31,6 +31,13 @@ public class Guerreiro extends Personagem{
         setRage(0);
         setMaxRage(50);
     }
+    public boolean rageCheck() {
+        if (getRage() == getMaxRage()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     @Override
     public void atacar(Personagem alvo) {
@@ -47,13 +54,5 @@ public class Guerreiro extends Personagem{
              System.out.println("Rage maxima atingida");
             }
         
-    }
-
-    public boolean rageCheck() {
-        if (getRage() == getMaxRage()) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }
