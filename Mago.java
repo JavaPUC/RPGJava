@@ -173,8 +173,8 @@ public class Mago extends Personagem {
     }
 
     public boolean verifMana(Spell spell) {
-        if (this.mana >= spell.getCustoMana()) {
-            this.mana -= spell.getCustoMana();
+        if (getMana() >= spell.getCustoMana()) {
+            setMana(getMana() - spell.getCustoMana());
             return true;
         } else {
             return false;
