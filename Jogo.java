@@ -112,7 +112,7 @@ public class Jogo {
                 int index = random.nextInt(9);
 
                 System.out.println("Você encontrou um inimigo!");
-                batalhar(inimigos[8]); 
+                batalhar(inimigos[index]); 
                 break;
             case 1:
                 System.out.println("Nada aconteceu.");
@@ -123,14 +123,15 @@ public class Jogo {
         }
     }
 
-    private void fugir() {
+    private boolean fugir() {
         System.out.println("Tentando fugir...");
         int chance = random.nextInt(100);
         if (chance < 50) { 
             System.out.println("Você conseguiu fugir.");
+            return true;
         } else {
             System.out.println("Você falhou.");
-           
+            return false;
         }
     }
 
@@ -152,6 +153,7 @@ public class Jogo {
     }
 
     public void batalhar(Inimigo inimigo) {
+        boolean fugiu = false;
         inimigo.setHp(inimigo.getMaxHp());
         System.out.println("Iniciando batalha!");
         System.out.println("============================================================================");
@@ -162,10 +164,8 @@ public class Jogo {
             System.out.println("||HP Jogador: " + jogador.getHp() + " | HP - " + inimigo.getNome() + ": " + inimigo.getHp()  + " || ");
             }
             System.out.println("============================================================================");
-        int turnCount = 0;
         boolean turnoJogador = true;
-
-        while (inimigo.getHp() > 0 && jogador.getHp() > 0) {
+        while (inimigo.getHp() > 0 && jogador.getHp() > 0 && fugiu == false) {
             if (turnoJogador) {
                 if (this.classe == 1) {
                     System.out.println("Escolha sua ação:");
@@ -186,14 +186,8 @@ public class Jogo {
                     } else if (acao == 4) {
                         System.out.println("Usando item...");
                     } else if (acao == 5) {
-                        System.out.println("Tentando fugir...");
-                        int chanceFuga = random.nextInt(100);
-                        if (chanceFuga < 50) {
-                            System.out.println("Você fugiu com sucesso!");
-                            break;
-                        } else {
-                            System.out.println("Fuga falhou!");
-                        }
+                        fugiu = fugir();
+                        turnoJogador = !turnoJogador;
                     } else {
                         System.out.println("Ação inválida. Você perde seu turno.");
                     }
@@ -213,7 +207,7 @@ public class Jogo {
                 jogador.setHp(jogador.getHp() - (10 + inimigo.getAtk())); 
             }
             
-            turnoJogador = !turnoJogador; 
+            
             System.out.println("============================================================================");
             if (this.classe == 1) {
             System.out.println("||HP - " + this.jogador.getNome() + ": " + jogador.getHp() + " | HP - " + inimigo.getNome() + ": " + inimigo.getHp() + " || ");  
@@ -222,7 +216,6 @@ public class Jogo {
             System.out.println("||HP Jogador: " + jogador.getHp() + " | HP - " + inimigo.getNome() + ": " + inimigo.getHp()  + " || ");
             }
             System.out.println("============================================================================");
-            turnCount++;
         }
 
         if (jogador.getHp() <= 0) {
