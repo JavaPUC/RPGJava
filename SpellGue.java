@@ -42,11 +42,13 @@ public class SpellGue{
     public void setSides2(int sides2) {
         this.sides2 = sides2;
     }
-    public SpellGue(String nome, String descricao,int custoMana,int rolls){
+    public SpellGue(String nome, String descricao,int custoMana,int rolls, int sides){
         setNome(nome);
         setDescricao(descricao);
         setCustoMana(custoMana);
         setRolls(rolls);
+        setSides(sides);
     }
+    
 }
 

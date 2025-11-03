@@ -2,6 +2,7 @@ public class Guerreiro extends Personagem{
     private int rage;
     private int maxRage;
     private double dano;
+    private SpelllistGue habilidadeZinha;
 
     public int getRage() {
         return rage;
@@ -38,7 +39,9 @@ public class Guerreiro extends Personagem{
             return false;
         }
     }
-
+    public SpellGue chooseSpellGue(int op) {
+        return habilidadeZinha.getSpellsGue()[op];
+    }
     @Override
     public void atacar(Personagem alvo) {
         
@@ -53,11 +56,26 @@ public class Guerreiro extends Personagem{
         else{
              System.out.println("Rage maxima atingida");
             }
-        
+    }
     public void habilidade(Personagem alvo, int op){
-        
+        SpellGue spell = chooseSpellGue(op);
+        String nome = spell.getNome();
+        switch(nome){
+            case "Gritar":
+            dice.setSides(spell.getSides());
+                for(int i = 0; i < 2; i++){
+                    if(rageCheck()){
+                        setRage(getRage() + dice.roll());
+                        if(getRage() > 50){
+                            setRage(50);
+                        }
+                        
+                    }
+
+                }
+        }
     }
-    }
+    
     @Override
     public void addToInv(Item item) {
         this.inventario.addItem(item);

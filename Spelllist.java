@@ -84,5 +84,6 @@ public class Spelllist {
     public void setSpells(Spell[] spells) {
         this.spells = spells;
     }
+    
 
 }

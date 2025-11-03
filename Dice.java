@@ -18,7 +18,7 @@ public class Dice {
         this.sides = sides;
     }
 
-    public double roll() {
+    public int roll() {
         Random rand = new Random();
         return rand.nextInt(getSides()) + 1;
     }
