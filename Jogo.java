@@ -180,7 +180,7 @@ public class Jogo {
                         jogador.atacar(inimigo);
                     } else if (acao == 2) {
                         int op = scanner.nextInt();
-                        ((Mago) jogador).atacar(inimigo, op);
+                        ((Mago) jogador).habilidade(inimigo, op);
                     } else if (acao == 3) {
                         ((Mago) jogador).listaSpell();
                     } else if (acao == 4) {
