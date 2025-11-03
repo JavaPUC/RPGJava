@@ -60,6 +60,11 @@ public class Guerreiro extends Personagem{
     public void habilidade(Personagem alvo, int op){
         SpellGue spell = chooseSpellGue(op);
         String nome = spell.getNome();
+        System.out.println(this.nome + " lançou " + nome + ".");
+        if (!verifMana(spell)) {
+            System.out.println("Sem mana para castar o feitiço.");
+            return;
+        }
         switch(nome){
             case "Gritar":
             dice.setSides(spell.getSides());
@@ -73,6 +78,27 @@ public class Guerreiro extends Personagem{
                     }
 
                 }
+            break;
+
+            case "Batida Enfurecida":
+            dice.setSides(spell.getSides());
+            System.out.println(this.nome + " está atacando " + alvo.getNome() + " com RAIVA.");
+            dano = dice.roll() + atk + this.getRage();
+            System.out.println(alvo.getNome() + " recebeu " + dano + " de dano.");
+            alvo.setHp(alvo.getHp() - dano);
+            break;
+
+            
+
+        }
+    }
+
+    public boolean verifMana(SpellGue spell) {
+        if (getMana() >= spell.getCustoMana()) {
+            setMana(getMana() - spell.getCustoMana());
+            return true;
+        } else {
+            return false;
         }
     }
     

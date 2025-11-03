@@ -8,6 +8,11 @@ public class SpelllistGue{
                 50,
                 2,
                 12);
+        spells[1] = new SpellGue("Batida Enfurecida",
+        "Causa 2d10 de dano + a sua Rage e a consome",
+        50,
+        2,
+        10);
     }
     public SpellGue[] getSpellsGue() {
         return spells;
