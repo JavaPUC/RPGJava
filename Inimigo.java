@@ -19,6 +19,7 @@ public class Inimigo extends Personagem {
         setDef(def);
         setXp(0);
         setLvl(lvl);
+        this.multLvlUp = 1.5;
         
     }
 

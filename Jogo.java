@@ -26,7 +26,7 @@ public class Jogo {
 
     public Jogo() {
         /* predef enemies */
-        this.inimigos = new Inimigo[9];
+        this.inimigos = new Inimigo[20];
         this.inimigos[0] = new Inimigo(1, "Goblin", 20, 4, 2, 1);
         this.inimigos[1] = new Inimigo(2, "Globin", 9999, 9999, 9999, 100);
         this.inimigos[2] = new Inimigo(3, "Vampiro", 50, 8, 4, 2);
@@ -35,7 +35,6 @@ public class Jogo {
         this.inimigos[5] = new Inimigo(6, "Balança Rabo-leitoso Gigante", 80, 8, 8, 3);
         this.inimigos[6] = new Inimigo(7, "Camponês Revoltado", 25, 5, 3, 1);
         this.inimigos[7] = new Inimigo(8, "Cultista", 60, 12, 5, 3);
-        this.inimigos[8] = new Inimigo(9, "???", 500, 30, 40, 10);
 
         this.random = new Random();
         this.scanner = new Scanner(System.in);
@@ -76,6 +75,7 @@ public class Jogo {
     }
 
     public void iniciar() {
+        int eventCount = 0;
         System.out.println("Bem-vindo ao RPG!");
         boolean jogando = true;
 
@@ -94,6 +94,16 @@ public class Jogo {
                     System.out.println("Saindo do jogo. Até a próxima!");
                     break;
                 case 1:
+                    eventCount++;
+                    if (eventCount == 10) {
+                        eventCount = 0;
+                        this.inimigos[8] = new Inimigo(9, "???", 30, 5, 5, jogador.getLvl() + 5);
+                        Inimigo boss = this.inimigos[8];
+                        for(int i = 0; i < boss.getLvl(); i++) {
+                            boss.lvlUp();
+                        }
+                        batalhar(boss);
+                    }
                     explorar();
                     break;
                 case 2:
@@ -105,17 +115,27 @@ public class Jogo {
     }
 
     private void explorar() {
+        /*  0: inimigo
+        1: armadilha
+        2: nada
+        3: bolsa com armadilha
+        4: bolsa com dinheiro
+        5: bolsa com pocao e dinheiro
+        6: globin
+        7: 
+        desisti de armadilha.
+        */
         System.out.println("Você está explorando...");
-        int evento = random.nextInt(3); // 0: inimigo, 1: armadilha, 2: nada
+        int evento = random.nextInt(10); 
         switch (evento) {
             case 0:
-                int index = random.nextInt(9);
+                int index = random.nextInt(8);
 
                 System.out.println("Você encontrou um inimigo!");
                 batalhar(inimigos[index]); 
                 break;
             case 1:
-                System.out.println("Nada aconteceu.");
+                System.out.println("Nada aconteceu."); 
                 break;
             case 2:
                 System.out.println("Nada aconteceu.");
