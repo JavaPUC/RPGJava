@@ -1,5 +1,4 @@
 public class Mago extends Personagem {
-    private int mana;
     private double dano;
     private Spelllist grimorio;
     boolean medit = false;
@@ -204,17 +203,5 @@ public class Mago extends Personagem {
     @Override
     public void addToInv(Item item) {
         this.inventario.addItem(item);
-    }
-
-    @Override
-    public void lvlUp() {
-        this.lvl += 1;
-        this.hp += this.hp * this.multLvlUp;
-        this.atk += this.atk * this.multLvlUp;
-        this.def += this.def * this.multLvlUp;
-        this.mana += this.mana * this.multLvlUp;
-        System.out.println(this.nome + " subiu para o nível " + this.lvl + "!");
-        System.out.println(
-                "Status - Hp: " + this.hp + "\nAtk: " + this.atk + "\nDef: " + this.def + "\nMana: " + this.mana);
     }
 }
