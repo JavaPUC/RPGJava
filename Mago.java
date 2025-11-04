@@ -150,7 +150,7 @@ public class Mago extends Personagem {
                     
                     alvo.setHp(alvo.getHp() - dano);
                 } else {
-                    System.out.println(this.nome + " não tem mana suficiente para lançar " + spell.getNome() + ".");
+                    System.out.println(this.getNome() + " não tem mana suficiente para lançar " + spell.getNome() + ".");
                 }
                 break;
         }
