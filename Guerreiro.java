@@ -86,8 +86,23 @@ public class Guerreiro extends Personagem{
             dano = dice.roll() + atk + this.getRage();
             System.out.println(alvo.getNome() + " recebeu " + dano + " de dano.");
             alvo.setHp(alvo.getHp() - dano);
+            this.setRage(0);
             break;
-
+            
+            case "JOGAR":
+            if (!this.inventario.isEmpty()) {
+                int rolls = spell.getRolls();
+                int randomIndex = (int) (Math.random() * this.inventario.getItems().length);
+                Item randomItem = this.inventario.getItem(randomIndex, inventario.getItems());
+                this.inventario.removeItem(randomItem);
+                System.out.println(
+                        this.nome + " usou Catapulta e removeu " + randomItem.getNome() + " do inventário.");
+                dano = calcDmgDef(spell, rolls, alvo);
+                alvo.setHp(alvo.getHp() - dano);
+            } else {
+                System.out.println(this.nome + " tentou jogar mas nao tem o que jogar");
+            }
+            break;
             
 
         }
@@ -117,5 +132,19 @@ public class Guerreiro extends Personagem{
         System.out.println(this.nome + " subiu para o nível " + this.lvl + "!");
         System.out.println(
                 "Status - Hp: " + this.hp + "\nAtk: " + this.atk + "\nDef: " + this.def + "\nMana: " + this.mana);
+    }
+    public double rollDie(SpellGue spell, int rolls) {
+        double total = 0;
+        dice.setSides(spell.getSides());
+        for (int i = 0; i < rolls; i++) {
+            total += dice.roll();
+        }
+        return total;
+    }
+
+    public double calcDmgDef(SpellGue spell, int rolls, Personagem alvo) {
+        dano = rollDie(spell, rolls) + this.getAtk() + this.getRage();
+        dano = dano - alvo.getDef();
+        return dano;
     }
 }

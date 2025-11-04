@@ -13,6 +13,12 @@ public class SpelllistGue{
         50,
         2,
         10);
+    
+        spells[2] = new SpellGue("JOGAR",
+        "Dano: 2d12 + atk + Rage. JOGA UM ITEM.",
+        40,
+        2,
+        6);
     }
     public SpellGue[] getSpellsGue() {
         return spells;
