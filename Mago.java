@@ -1,5 +1,4 @@
 public class Mago extends Personagem {
-    private int mana;
     private double dano;
     private Spelllist grimorio;
     boolean medit = false;
@@ -45,14 +44,15 @@ public class Mago extends Personagem {
             case "Meditação":
                 medit = true;
                 System.out.println(this.nome + " está meditando para recuperar mana.");
-                dice.setSides(spell.getSides());
+                setSides(spell);
                 int manaRecuperada = 0;
                 for (int i = 0; i < 4; i++) {
                     manaRecuperada += dice.roll();
+                    this.setMana(getMana() + manaRecuperada);
                 }
-                this.mana += manaRecuperada;
+                
                 System.out.println(
-                        this.nome + " recuperou " + manaRecuperada + " de mana e agora tem " + this.mana + " de mana.");
+                        this.nome + " recuperou " + manaRecuperada + " de mana e agora tem " + this.getMana() + " de mana.");
                 break;
 
             case "Perturbação da Alma":
@@ -145,12 +145,12 @@ public class Mago extends Personagem {
 
             default:
                 if (verifMana(spell)) {
-                    dice.setSides(spell.getSides());
+                    setSides(spell);
                     dano = calcDmgDef(spell, rolls, alvo);
                     
                     alvo.setHp(alvo.getHp() - dano);
                 } else {
-                    System.out.println(this.nome + " não tem mana suficiente para lançar " + spell.getNome() + ".");
+                    System.out.println(this.getNome() + " não tem mana suficiente para lançar " + spell.getNome() + ".");
                 }
                 break;
         }
@@ -196,20 +196,12 @@ public class Mago extends Personagem {
         return dano;
     }
 
-    @Override
-    public void addToInv(Item item) {
-        this.inventario.addItem(item);
+    public void setSides(Spell spell) {
+        dice.setSides(spell.getSides());
     }
 
     @Override
-    public void lvlUp() {
-        this.lvl += 1;
-        this.hp += this.hp * this.multLvlUp;
-        this.atk += this.atk * this.multLvlUp;
-        this.def += this.def * this.multLvlUp;
-        this.mana += this.mana * this.multLvlUp;
-        System.out.println(this.nome + " subiu para o nível " + this.lvl + "!");
-        System.out.println(
-                "Status - Hp: " + this.hp + "\nAtk: " + this.atk + "\nDef: " + this.def + "\nMana: " + this.mana);
+    public void addToInv(Item item) {
+        this.inventario.addItem(item);
     }
 }
