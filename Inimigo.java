@@ -19,15 +19,19 @@ public class Inimigo extends Personagem {
         setDef(def);
         setXp(0);
         setLvl(lvl);
-        this.multLvlUp = 1.5;
+        this.multLvlUp = 1.05;
         
     }
 
     @Override
     public void atacar(Personagem alvo) {
-        System.out.println(this.getNome() + " ataca" + alvo.getNome() + "com um ataque corpo-a-corpo.");
+        System.out.println(this.getNome() + " ataca " + alvo.getNome() + " com um ataque corpo-a-corpo.");
         dice.setSides(4);
         dano = dice.roll() + this.getAtk();
+        dano = dano - alvo.getDef();
+        if (dano < 0) {
+            dano = 0;
+        }
         alvo.setHp(alvo.getHp() - dano);
         System.out.println(alvo.getNome() + " recebeu " + dano + ".");
     }
@@ -44,8 +48,21 @@ public class Inimigo extends Personagem {
         dice.setSides(6);
         dano = dice.roll() + this.getAtk();
         dano = dano + (dice.roll() + this.getAtk());
+         dano = dano - alvo.getDef();
+        if (dano < 0) {
+            dano = 0;
+        }
         alvo.setHp(alvo.getHp() - dano);
         System.out.println(alvo.getNome() + " recebeu " + dano + ".");
+    }
+
+    @Override
+    public void lvlUp() {
+        this.lvl += 1;
+        this.setHp(this.getHp() * this.multLvlUp);
+        this.setMaxHp(this.getHp());
+        this.setAtk(this.getAtk() * this.multLvlUp);
+        this.setMana((int)(Math.floor(this.getMana() * this.multLvlUp)));
     }
 
     /*

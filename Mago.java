@@ -193,6 +193,9 @@ public class Mago extends Personagem {
     public double calcDmgDef(Spell spell, int rolls, Personagem alvo) {
         dano = rollDie(spell, rolls) + this.getAtk();
         dano = dano - alvo.getDef();
+        if (dano < 0) {
+            dano = 0;
+        }
         return dano;
     }
 
