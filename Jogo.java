@@ -8,7 +8,7 @@ public class Jogo {
     private Scanner scanner;
     private Inimigo[] inimigos;
     boolean canFightBoss = false;
-    private int ato = 1;
+    private int ato = 0;
 
     /* predef items */
     Item pocaoHp = new Item(1, "Poção de Vida", "Restaura 50 pontos de vida.", "restoreHp", 5);
@@ -73,6 +73,11 @@ public class Jogo {
                 case 2:
                     setJogador(new Arqueiro(nome));
                     System.out.println("Você escolheu - Arqueiro.");
+                    System.out.println("Status inicial:");
+                    System.out.println("HP: " + jogador.getHp() + "/" + jogador.getMaxHp());
+                    System.out.println("Mana: " + jogador.getMana());
+                    System.out.println("Atk: " + jogador.getAtk());
+                    System.out.println("Def: " + jogador.getDef());
                     escolhaValida = true;
                     break;
                 case 3:
@@ -91,7 +96,6 @@ public class Jogo {
     }
 
     public void iniciar() {
-        int eventCount = 0;
         System.out.println("Bem-vindo ao RPG!");
         boolean jogando = true;
 
@@ -113,11 +117,11 @@ public class Jogo {
                     System.out.println("Saindo do jogo. Até a próxima!");
                     break;
                 case 1:
-                    eventCount++;
-                    if (eventCount == 30) {
-                        canFightBoss = true;
+                    if (ato == 3) {
+                        System.out.println("Você não pode explorar.");
+                    } else {
+                        explorar();
                     }
-                    explorar();
                     break;
                 case 2:
                     usarItem();
@@ -125,14 +129,19 @@ public class Jogo {
                     status();
                     break;
                 case 4:
-                    
+                    textoAto(ato);
+                    if (ato < 3) {
+                        ato++;
+                    } else {
+                        
+                    }
+
+                    break;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
             }
         }
     }
-
-    
 
     private void explorar() {
 
@@ -258,7 +267,7 @@ public class Jogo {
         jogador.getInventario().useItem(jogador, itemPos);
     }
 
-    public void textoAto(int ato ) {
+    public void textoAto(int ato) {
         if (ato == 1) {
             System.out.println("Placeholder");
         } else if (ato == 2) {
@@ -283,10 +292,13 @@ public class Jogo {
             System.out.println("||HP - " + this.jogador.getNome() + ": " + jogador.getHp() + " | HP - "
                     + inimigo.getNome() + ": " + inimigo.getHp() + " || ");
             System.out.println("||Mana -" + this.jogador.getNome() + ": " + ((Mago) jogador).getMana());
+        } else if (this.classe == 2) {
+            System.out.println("||HP - " + this.jogador.getNome() + ": " + jogador.getHp() + " | HP - "
+                    + inimigo.getNome() + ": " + inimigo.getHp() + " || ");
+             System.out.println("||Mana -" + this.jogador.getNome() + ": " + ((Arqueiro) jogador).getMana());
         } else if (this.classe == 3) {
-            System.out
-                    .println("||HP - " + this.jogador.getNome() + ": " + jogador.getHp() + " | HP - "
-                            + inimigo.getNome() + ": " + inimigo.getHp() + " || ");
+            System.out.println("||HP - " + this.jogador.getNome() + ": " + jogador.getHp() + " | HP - "
+                    + inimigo.getNome() + ": " + inimigo.getHp() + " || ");
             System.out.println("||Raiva -" + this.jogador.getNome() + ": " + ((Guerreiro) jogador).getRage());
             System.out.println("||Mana -" + this.jogador.getNome() + ": " + ((Guerreiro) jogador).getMana());
         } else {
@@ -324,7 +336,36 @@ public class Jogo {
                     } else {
                         System.out.println("Ação inválida. Você perde seu turno.");
                     }
-                } else if (classe == 3) {
+                } else if (classe == 2) {
+                    System.out.println("Escolha sua ação:");
+                    System.out.println("[1] Ataque padrão");
+                    System.out.println("[2] Usar habilidade");
+                    System.out.println("[3] Listar habilidades");
+                    System.out.println("[4] Usar item");
+                    System.out.println("[5] Tentar fugir");
+                    int acao = scanner.nextInt();
+                    scanner.nextLine();
+                    if (acao == 1) {
+                        jogador.atacar(inimigo);
+                    } else if (acao == 2) {
+                        int op = scanner.nextInt();
+                        ((Arqueiro) jogador).habilidade(inimigo, op);
+                    } else if (acao == 3) {
+                        System.out.println("Listando habilidades...");
+                        ((Arqueiro) jogador).listaSpellArq();
+                        acaoLista = true;
+                    } else if (acao == 4) {
+                        usarItem();
+                        break;
+                    } else if (acao == 5) {
+                        fugiu = fugir();
+                        inimigo.atacar(jogador);
+                    } else {
+                        System.out.println("Ação inválida. Você perde seu turno.");
+                    }
+                }
+
+                else if (classe == 3) {
                     System.out.println("Escolha sua ação:");
                     System.out.println("[1] Ataque físico");
                     System.out.println("[2] Usar habilidade");
@@ -342,8 +383,7 @@ public class Jogo {
                         System.out.println("Listando habilidades...");
                         ((Guerreiro) jogador).listaSpellGue();
                         acaoLista = true;
-                    }
-                    else if (acao == 4) {
+                    } else if (acao == 4) {
                         usarItem();
                         break;
                     } else if (acao == 5) {
@@ -359,7 +399,13 @@ public class Jogo {
                     System.out.println("||HP - " + this.jogador.getNome() + ": " + jogador.getHp() + " | HP - "
                             + inimigo.getNome() + ": " + inimigo.getHp() + " || ");
                     System.out.println("||Mana -" + this.jogador.getNome() + ": " + ((Mago) jogador).getMana());
-                } else if (this.classe == 3) {
+                } else if (this.classe == 2) {
+                    System.out.println("||HP - " + this.jogador.getNome() + ": " + jogador.getHp() + " | HP - "
+                            + inimigo.getNome() + ": " + inimigo.getHp() + " || ");
+                     System.out.println("||Mana -" + this.jogador.getNome() + ": " + ((Arqueiro) jogador).getMana());
+                }
+                
+                else if (this.classe == 3) {
                     System.out
                             .println("||HP - " + this.jogador.getNome() + ": " + jogador.getHp() + " | HP - "
                                     + inimigo.getNome() + ": " + inimigo.getHp() + " || ");
