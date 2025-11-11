@@ -58,6 +58,10 @@ public abstract class Personagem {
 
     public void setXp(int xp) {
         this.xp = xp;
+        if (this.xp >= 100) {
+            this.xp -= 100;
+            this.lvlUp();
+        }
     }
 
     public int getLvl() {
@@ -95,6 +99,7 @@ public abstract class Personagem {
     public void lvlUp() {
         this.lvl += 1;
         this.setHp(this.getHp() * this.multLvlUp);
+        this.setMaxHp(this.getMaxHp() * this.multLvlUp);
         this.setAtk(this.getAtk() * this.multLvlUp);
         this.setDef(this.getDef() * this.multLvlUp);
         this.setMana((int)(Math.floor(this.getMana() * this.multLvlUp)));

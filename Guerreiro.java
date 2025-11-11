@@ -31,6 +31,7 @@ public class Guerreiro extends Personagem{
         setMana(100);
         setRage(0);
         setMaxRage(50);
+        habilidadeZinha = new SpelllistGue(); // Initialize habilidadeZinha
     }
     public boolean rageCheck() {
         if (getRage() == getMaxRage()) {
@@ -78,6 +79,7 @@ public class Guerreiro extends Personagem{
                     }
 
                 }
+            System.out.println(this.nome + " usou Gritar e agora tem " + this.getRage() + " de raiva.");
             break;
 
             case "Batida Enfurecida":
@@ -117,10 +119,22 @@ public class Guerreiro extends Personagem{
         }
     }
     
+    public void listaSpellGue() {
+        System.out.println("Escolha um ataque:");
+        for (int i = 0; i < habilidadeZinha.getSpellsGue().length; i++) {
+            System.out.println("[" + i + "] " + habilidadeZinha.getSpellsGue()[i].getNome() +
+                    "\n Descrição: " + habilidadeZinha.getSpellsGue()[i].getDescricao() +
+                    "\n Custo de Mana: " + habilidadeZinha.getSpellsGue()[i].getCustoMana() +
+                    ")");
+        }
+    }
+
     @Override
     public void addToInv(Item item) {
         this.inventario.addItem(item);
     }
+
+
 
     @Override
     public void lvlUp() {

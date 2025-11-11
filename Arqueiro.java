@@ -1,7 +1,9 @@
 public class Arqueiro extends Personagem{
 
     private double dano;
-    private SpelllistArc habilidadeZinhaInha;
+
+
+
 
     public double getDano() {
         return dano;
