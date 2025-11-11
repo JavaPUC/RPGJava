@@ -8,6 +8,7 @@ public class Jogo {
     private Scanner scanner;
     private Inimigo[] inimigos;
     boolean canFightBoss = false;
+    private int ato = 1;
 
     /* predef items */
     Item pocaoHp = new Item(1, "Poção de Vida", "Restaura 50 pontos de vida.", "restoreHp", 5);
@@ -100,6 +101,7 @@ public class Jogo {
             System.out.println("[1] Explorar");
             System.out.println("[2] Usar item");
             System.out.println("[3] Verificar status");
+            System.out.println("[4] Prosseguir com a história");
             System.out.println("[0] Sair do jogo");
 
             int escolha = scanner.nextInt();
@@ -118,45 +120,22 @@ public class Jogo {
                     explorar();
                     break;
                 case 2:
-                    System.out.println("Inventário:");
-                    jogador.getInventario().lista();
-                    System.out.println("Digite a posicao do item que deseja usar:");
-                    int itemPos = scanner.nextInt();
-                    jogador.getInventario().useItem(jogador, itemPos);
-                    break;
+                    usarItem();
                 case 3:
-                    System.out.println("Status do Jogador:");
-                    System.out.println("Nome: " + jogador.getNome());
-                    System.out.println("Nível: " + jogador.getLvl());
-                    System.out.println("XP: " + jogador.getXp() + "/100");
-                    System.out.println("HP: " + jogador.getHp() + "/" + jogador.getMaxHp());
-                    System.out.println("Atk: " + jogador.getAtk());
-                    System.out.println("Def: " + jogador.getDef());
-                    System.out.println("Mana: " + jogador.getMana());
+                    status();
                     break;
                 case 4:
-                    this.inimigos[8] = new Inimigo(9, "???", 200, 20, 20, jogador.getLvl() + 5);
-                    Inimigo boss = this.inimigos[8];
-                    batalhar(boss);
-                    break;
+                    
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
             }
         }
     }
 
+    
+
     private void explorar() {
-        /*
-         * 0: inimigo
-         * 1: armadilha
-         * 2: nada
-         * 3: bolsa com armadilha
-         * 4: bolsa com dinheiro
-         * 5: bolsa com pocao de mana e dinheiro
-         * 6: bolsa com pocao de hp e dinheiro
-         * 7: armadilha e perde um item
-         * 8: bifurcação
-         */
+
         System.out.println("Você está explorando...");
         if (canFightBoss) {
             this.inimigos[8] = new Inimigo(9, "???", 30, 5, 5, jogador.getLvl() + 2);
@@ -226,18 +205,6 @@ public class Jogo {
                 }
                 break;
             case 6:
-                System.out.println("Você caiu em uma armadilha! Além disso, perdeu um item do seu inventário.");
-                if (!jogador.getInventario().isEmpty()) {
-                    int randomIndex = random.nextInt(jogador.getInventario().getItems().length);
-                    Item randomItem = jogador.getInventario().getItem(randomIndex, jogador.getInventario().getItems());
-                    jogador.getInventario().removeItem(randomItem);
-                    System.out.println(
-                            "Você perdeu " + randomItem.getNome() + " do seu inventário.");
-                } else {
-                    System.out.println("Mas seu inventário está vazio, então você não perdeu nenhum item.");
-                }
-                break;
-            case 7:
                 tomarDecisao(); // a falsa ilusão da livre escolha
                 break;
         }
@@ -269,6 +236,35 @@ public class Jogo {
             System.out.println("Você escolheu o caminho da direita. Algo perigoso acontece...");
         } else {
             System.out.println("Escolha inválida.");
+        }
+    }
+
+    private void status() {
+        System.out.println("Status do Jogador:");
+        System.out.println("Nome: " + jogador.getNome());
+        System.out.println("Nível: " + jogador.getLvl());
+        System.out.println("XP: " + jogador.getXp() + "/100");
+        System.out.println("HP: " + jogador.getHp() + "/" + jogador.getMaxHp());
+        System.out.println("Atk: " + jogador.getAtk());
+        System.out.println("Def: " + jogador.getDef());
+        System.out.println("Mana: " + jogador.getMana());
+    }
+
+    private void usarItem() {
+        System.out.println("Inventário:");
+        jogador.getInventario().lista();
+        System.out.println("Digite a posição do item que deseja usar:");
+        int itemPos = scanner.nextInt();
+        jogador.getInventario().useItem(jogador, itemPos);
+    }
+
+    public void textoAto(int ato ) {
+        if (ato == 1) {
+            System.out.println("Placeholder");
+        } else if (ato == 2) {
+            System.out.println("Placeholder ato 2");
+        } else {
+            System.out.println("Placeholder ato 3");
         }
     }
 
@@ -320,11 +316,8 @@ public class Jogo {
                         acaoLista = true;
                         ((Mago) jogador).listaSpell();
                     } else if (acao == 4) {
-                        System.out.println("Inventário:");
-                        jogador.getInventario().lista();
-                        System.out.println("Digite a posicao do item que deseja usar:");
-                        int itemPos = scanner.nextInt();
-                        jogador.getInventario().useItem(jogador, itemPos);
+                        usarItem();
+                        break;
                     } else if (acao == 5) {
                         fugiu = fugir();
                         inimigo.atacar(jogador);
@@ -350,13 +343,8 @@ public class Jogo {
                         ((Guerreiro) jogador).listaSpellGue();
                         acaoLista = true;
                     }
-
                     else if (acao == 4) {
-                        System.out.println("Inventário:");
-                        jogador.getInventario().lista();
-                        System.out.println("Digite a posicao do item que deseja usar:");
-                        int itemPos = scanner.nextInt();
-                        jogador.getInventario().useItem(jogador, itemPos);
+                        usarItem();
                         break;
                     } else if (acao == 5) {
                         fugiu = fugir();
