@@ -30,7 +30,7 @@ public class Jogo {
         this.inimigos[0] = new Inimigo(1, "Goblin", 20, 4, 2, 1);
         this.inimigos[1] = new Inimigo(2, "Globin", 9999, 9999, 9999, 100);
         this.inimigos[2] = new Inimigo(3, "Vampiro", 50, 8, 4, 2);
-        this.inimigos[3] = new Inimigo(4, "Escaravelho Gigante", 40, 6, 3, 2);
+        this.inimigos[3] = new Inimigo(4, "Caralho velho Gigante", 40, 6, 3, 2);
         this.inimigos[4] = new Inimigo(5, "Falcão-peregrino", 30, 7, 2, 2);
         this.inimigos[5] = new Inimigo(6, "Balança Rabo-leitoso Gigante", 80, 8, 8, 3);
         this.inimigos[6] = new Inimigo(7, "Camponês Revoltado", 25, 5, 3, 1);
