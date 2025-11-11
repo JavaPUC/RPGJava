@@ -98,7 +98,7 @@ public class Guerreiro extends Personagem{
                 Item randomItem = this.inventario.getItem(randomIndex, inventario.getItems());
                 this.inventario.removeItem(randomItem);
                 System.out.println(
-                        this.nome + " usou Catapulta e removeu " + randomItem.getNome() + " do inventário.");
+                        this.nome + " JOGOU e removeu " + randomItem.getNome() + " do inventário.");
                 dano = calcDmgDef(spell, rolls, alvo);
                 alvo.setHp(alvo.getHp() - dano);
             } else {
