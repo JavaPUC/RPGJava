@@ -17,6 +17,7 @@ public class Arqueiro extends Personagem {
         setMaxFoco(100);
         this.multLvlUp = 1.25;
         habilidades = new SpelllistArq();
+        this.inventario = new Inventario();
     }
 
     public int getFoco() {

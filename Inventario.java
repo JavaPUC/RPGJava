@@ -11,7 +11,8 @@ public class Inventario implements Cloneable {
             return;
         }
         for (Item item : items) {
-            System.out.println("Posição:" + item.getId() + ", Nome: " + item.getNome() + ", Quantidade: " + item.getQtd());
+            System.out.println(
+                    "Posição:" + item.getId() + ", Nome: " + item.getNome() + ", Quantidade: " + item.getQtd());
         }
     }
 
@@ -24,7 +25,6 @@ public class Inventario implements Cloneable {
 
     public void addItem(Item newItem) {
         if (items == null) {
-            // Initialize the array if it is null
             items = new Item[1];
             items[0] = newItem;
             return;
@@ -37,7 +37,6 @@ public class Inventario implements Cloneable {
             }
         }
 
-        // If the array is full, create a new array with a larger size
         Item[] newItems = new Item[items.length + 1];
         System.arraycopy(items, 0, newItems, 0, items.length);
         newItems[items.length] = newItem;
@@ -89,6 +88,11 @@ public class Inventario implements Cloneable {
     }
 
     public void removeItem(Item remItem) {
+        if (items == null || items.length == 0) {
+            System.out.println("O inventário está vazio. Não é possível remover itens.");
+            return;
+        }
+
         for (int i = 0; i < items.length; i++) {
             if (items[i].hashCode() == remItem.hashCode()) {
                 items[i].qtdDown();

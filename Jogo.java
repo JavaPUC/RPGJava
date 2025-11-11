@@ -10,8 +10,8 @@ public class Jogo {
     boolean canFightBoss = false;
 
     /* predef items */
-    Item pocaoHp = new Item(1, "Poção de Vida", "Restaura 50 pontos de vida.", "restoreHp", 1);
-    Item pocaoMana = new Item(2, "Poção de Mana", "Restaura 50 pontos de mana.", "restoreMana", 1);
+    Item pocaoHp = new Item(1, "Poção de Vida", "Restaura 50 pontos de vida.", "restoreHp", 5);
+    Item pocaoMana = new Item(2, "Poção de Mana", "Restaura 50 pontos de mana.", "restoreMana", 5);
     Item moedaOuro = new Item(3, "Moeda de Ouro", "Uma moeda brilhante de ouro.", "money", 100);
 
     public int getClasse() {
@@ -84,8 +84,6 @@ public class Jogo {
                     break;
             }
         }
-
-        // Add predefined items to the player's inventory
         jogador.addToInv(pocaoHp);
         jogador.addToInv(pocaoMana);
         jogador.addToInv(moedaOuro);
@@ -114,7 +112,7 @@ public class Jogo {
                     break;
                 case 1:
                     eventCount++;
-                    if (eventCount == 10) {
+                    if (eventCount == 30) {
                         canFightBoss = true;
                     }
                     explorar();
@@ -137,13 +135,8 @@ public class Jogo {
                     System.out.println("Mana: " + jogador.getMana());
                     break;
                 case 4:
-                    this.inimigos[8] = new Inimigo(9, "???", 30, 10, 5, jogador.getLvl() + 5);
+                    this.inimigos[8] = new Inimigo(9, "???", 200, 20, 20, jogador.getLvl() + 5);
                     Inimigo boss = this.inimigos[8];
-                    for (int i = 0; i < (jogador.getLvl() + 5); i++) {
-                        boss.lvlUp();
-                    }
-                    System.out.println(boss.getAtk());
-                    System.out.println(boss.getLvl());
                     batalhar(boss);
                     break;
                 default:
@@ -161,26 +154,26 @@ public class Jogo {
          * 4: bolsa com dinheiro
          * 5: bolsa com pocao de mana e dinheiro
          * 6: bolsa com pocao de hp e dinheiro
-         * 7: globin
-         * 8: armadilha e perde um item
+         * 7: armadilha e perde um item
+         * 8: bifurcação
          */
         System.out.println("Você está explorando...");
         if (canFightBoss) {
-            this.inimigos[8] = new Inimigo(9, "???", 30, 5, 5, jogador.getLvl() + 5);
+            this.inimigos[8] = new Inimigo(9, "???", 30, 5, 5, jogador.getLvl() + 2);
             Inimigo boss = this.inimigos[8];
-            for (int i = 0; i < (jogador.getLvl() + 5); i++) {
+            for (int i = 0; i < (jogador.getLvl() + 2); i++) {
                 boss.lvlUp();
             }
             batalhar(boss);
         }
-        int evento = random.nextInt(1000); 
-        if (evento == 0) {
+        int evento = random.nextInt(1000);
+        if (evento == 1) {
             System.out.println("Você encontrou um Globin!");
             batalhar(inimigos[1]);
             return;
         }
 
-        evento = random.nextInt(10); 
+        evento = random.nextInt(10);
         switch (evento) {
             case 0:
                 int index = random.nextInt(8);
@@ -222,19 +215,6 @@ public class Jogo {
             case 5:
                 System.out.println("Você encontrou uma bolsa! Quer abrir?");
                 System.out.println("[1] Sim" + "\n[2] Não");
-                int abrir3 = scanner.nextInt();
-                if (abrir3 == 1) {
-                    System.out.println("Você abriu a bolsa e encontrou uma poção de mana e 50 moedas de ouro!");
-                    jogador.addToInv(pocaoMana);
-                    Item moedaOuro50 = new Item(3, "Moeda de Ouro", "Uma moeda brilhante de ouro.", "money", 50);
-                    jogador.addToInv(moedaOuro50);
-                } else {
-                    System.out.println("Você decidiu não abrir a bolsa.");
-                }
-                break;
-            case 6:
-                System.out.println("Você encontrou uma bolsa! Quer abrir?");
-                System.out.println("[1] Sim" + "\n[2] Não");
                 int abrir4 = scanner.nextInt();
                 if (abrir4 == 1) {
                     System.out.println("Você abriu a bolsa e encontrou uma poção de vida e 50 moedas de ouro!");
@@ -245,8 +225,21 @@ public class Jogo {
                     System.out.println("Você decidiu não abrir a bolsa.");
                 }
                 break;
+            case 6:
+                System.out.println("Você caiu em uma armadilha! Além disso, perdeu um item do seu inventário.");
+                if (!jogador.getInventario().isEmpty()) {
+                    int randomIndex = random.nextInt(jogador.getInventario().getItems().length);
+                    Item randomItem = jogador.getInventario().getItem(randomIndex, jogador.getInventario().getItems());
+                    jogador.getInventario().removeItem(randomItem);
+                    System.out.println(
+                            "Você perdeu " + randomItem.getNome() + " do seu inventário.");
+                } else {
+                    System.out.println("Mas seu inventário está vazio, então você não perdeu nenhum item.");
+                }
+                break;
             case 7:
-
+                tomarDecisao(); // a falsa ilusão da livre escolha
+                break;
         }
     }
 
@@ -280,6 +273,11 @@ public class Jogo {
     }
 
     public void batalhar(Inimigo inimigo) {
+        if (inimigo.getHp() <= 0) {
+            System.out.println(inimigo.getNome() + " já está derrotado.");
+            return;
+        }
+
         boolean acaoLista = false;
         boolean fugiu = false;
         inimigo.setHp(inimigo.getMaxHp());
@@ -289,6 +287,12 @@ public class Jogo {
             System.out.println("||HP - " + this.jogador.getNome() + ": " + jogador.getHp() + " | HP - "
                     + inimigo.getNome() + ": " + inimigo.getHp() + " || ");
             System.out.println("||Mana -" + this.jogador.getNome() + ": " + ((Mago) jogador).getMana());
+        } else if (this.classe == 3) {
+            System.out
+                    .println("||HP - " + this.jogador.getNome() + ": " + jogador.getHp() + " | HP - "
+                            + inimigo.getNome() + ": " + inimigo.getHp() + " || ");
+            System.out.println("||Raiva -" + this.jogador.getNome() + ": " + ((Guerreiro) jogador).getRage());
+            System.out.println("||Mana -" + this.jogador.getNome() + ": " + ((Guerreiro) jogador).getMana());
         } else {
             System.out.println("||HP Jogador: " + jogador.getHp() + " | HP - " + inimigo.getNome() + ": "
                     + inimigo.getHp() + " || ");
@@ -316,7 +320,11 @@ public class Jogo {
                         acaoLista = true;
                         ((Mago) jogador).listaSpell();
                     } else if (acao == 4) {
-                        System.out.println("Usando item...");
+                        System.out.println("Inventário:");
+                        jogador.getInventario().lista();
+                        System.out.println("Digite a posicao do item que deseja usar:");
+                        int itemPos = scanner.nextInt();
+                        jogador.getInventario().useItem(jogador, itemPos);
                     } else if (acao == 5) {
                         fugiu = fugir();
                         inimigo.atacar(jogador);
@@ -344,7 +352,12 @@ public class Jogo {
                     }
 
                     else if (acao == 4) {
-                        System.out.println("Usando item...");
+                        System.out.println("Inventário:");
+                        jogador.getInventario().lista();
+                        System.out.println("Digite a posicao do item que deseja usar:");
+                        int itemPos = scanner.nextInt();
+                        jogador.getInventario().useItem(jogador, itemPos);
+                        break;
                     } else if (acao == 5) {
                         fugiu = fugir();
                         inimigo.atacar(jogador);
@@ -358,9 +371,12 @@ public class Jogo {
                     System.out.println("||HP - " + this.jogador.getNome() + ": " + jogador.getHp() + " | HP - "
                             + inimigo.getNome() + ": " + inimigo.getHp() + " || ");
                     System.out.println("||Mana -" + this.jogador.getNome() + ": " + ((Mago) jogador).getMana());
-                } else {
-                    System.out.println("||HP Jogador: " + jogador.getHp() + " | HP - " + inimigo.getNome() + ": "
-                            + inimigo.getHp() + " || ");
+                } else if (this.classe == 3) {
+                    System.out
+                            .println("||HP - " + this.jogador.getNome() + ": " + jogador.getHp() + " | HP - "
+                                    + inimigo.getNome() + ": " + inimigo.getHp() + " || ");
+                    System.out.println("||Raiva -" + this.jogador.getNome() + ": " + ((Guerreiro) jogador).getRage());
+                    System.out.println("||Mana -" + this.jogador.getNome() + ": " + ((Guerreiro) jogador).getMana());
                 }
                 System.out.println("============================================================================");
                 if (!acaoLista) {
@@ -382,7 +398,15 @@ public class Jogo {
                 System.out.println("||HP - " + this.jogador.getNome() + ": " + jogador.getHp() + " | HP - "
                         + inimigo.getNome() + ": " + inimigo.getHp() + " || ");
                 System.out.println("||Mana -" + this.jogador.getNome() + ": " + ((Mago) jogador).getMana());
-            } else {
+            } else if (this.classe == 3) {
+                System.out
+                        .println("||HP - " + this.jogador.getNome() + ": " + jogador.getHp() + " | HP - "
+                                + inimigo.getNome() + ": " + inimigo.getHp() + " || ");
+                System.out.println("||Raiva -" + this.jogador.getNome() + ": " + ((Guerreiro) jogador).getRage());
+                System.out.println("||Mana -" + this.jogador.getNome() + ": " + ((Guerreiro) jogador).getMana());
+            }
+
+            else {
                 System.out.println("||HP Jogador: " + jogador.getHp() + " | HP - " + inimigo.getNome() + ": "
                         + inimigo.getHp() + " || ");
             }
