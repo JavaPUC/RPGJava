@@ -46,7 +46,7 @@ public class Guerreiro extends Personagem {
     @Override
     public void atacar(Personagem alvo) {
 
-        System.out.println(this.nome + " ataca" + alvo.getNome() + "com um ataque corpo-a-corpo.");
+        System.out.println(this.nome + " ataca " + alvo.getNome() + " com um ataque corpo-a-corpo.");
         dice.setSides(4);
         dano = dice.roll() + this.getAtk() + getRage();
         alvo.setHp(alvo.getHp() - dano);

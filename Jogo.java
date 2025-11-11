@@ -8,7 +8,7 @@ public class Jogo {
     private Scanner scanner;
     private Inimigo[] inimigos;
     boolean canFightBoss = false;
-    private int ato = 1;
+    private int ato = 0;
 
     /* predef items */
     Item pocaoHp = new Item(1, "Poção de Vida", "Restaura 50 pontos de vida.", "restoreHp", 5);
@@ -38,11 +38,12 @@ public class Jogo {
         this.inimigos[0] = new Inimigo(1, "Goblin", 20, 4, 2, 1);
         this.inimigos[1] = new Inimigo(2, "Globin", 9999, 9999, 9999, 100);
         this.inimigos[2] = new Inimigo(3, "Vampiro", 50, 8, 4, 2);
-        this.inimigos[3] = new Inimigo(4, "Caralho velho Gigante", 40, 6, 3, 2);
+        this.inimigos[3] = new Inimigo(4, "Escaravelho Gigante", 40, 6, 3, 2);
         this.inimigos[4] = new Inimigo(5, "Falcão-peregrino", 30, 7, 2, 2);
         this.inimigos[5] = new Inimigo(6, "Balança Rabo-leitoso Gigante", 80, 8, 8, 3);
         this.inimigos[6] = new Inimigo(7, "Camponês Revoltado", 25, 5, 3, 1);
         this.inimigos[7] = new Inimigo(8, "Cultista", 60, 12, 5, 3);
+        this.inimigos[8] = new Inimigo(9, "Lich", 30, 5, 5, 1);
 
         this.random = new Random();
         this.scanner = new Scanner(System.in);
@@ -125,9 +126,8 @@ public class Jogo {
                     status();
                     break;
                 case 4:
-                    
-                default:
-                    System.out.println("Opção inválida. Tente novamente.");
+                    prosseguirHistoria();
+                    break;
             }
         }
     }
@@ -137,14 +137,6 @@ public class Jogo {
     private void explorar() {
 
         System.out.println("Você está explorando...");
-        if (canFightBoss) {
-            this.inimigos[8] = new Inimigo(9, "???", 30, 5, 5, jogador.getLvl() + 2);
-            Inimigo boss = this.inimigos[8];
-            for (int i = 0; i < (jogador.getLvl() + 2); i++) {
-                boss.lvlUp();
-            }
-            batalhar(boss);
-        }
         int evento = random.nextInt(1000);
         if (evento == 1) {
             System.out.println("Você encontrou um Globin!");
@@ -232,13 +224,55 @@ public class Jogo {
 
         if (escolha == 1) {
             System.out.println("Você escolheu o caminho da esquerda. Algo interessante acontece...");
+              System.out.println("Você encontrou uma bolsa! Quer abrir?");
+                System.out.println("[1] Sim" + "\n[2] Não");
+                int abrir2 = scanner.nextInt();
+                if (abrir2 == 1) {
+                    System.out.println("Você abriu a bolsa e encontrou 100 moedas de ouro!");
+                    jogador.addToInv(moedaOuro);
+                } else {
+                    System.out.println("Você decidiu não abrir a bolsa.");
+                }
         } else if (escolha == 2) {
             System.out.println("Você escolheu o caminho da direita. Algo perigoso acontece...");
+            System.out.println("Você caiu em uma armadilha! Que pena.");
+                jogador.setHp(jogador.getHp() - 10);
+                System.out.println("Você perdeu 10 de HP e agora tem " + jogador.getHp() + " de HP.");
         } else {
             System.out.println("Escolha inválida.");
         }
     }
+    private void prosseguirHistoria() {
+        ato++;
 
+        switch (ato) {
+            case 1:
+                textoAto(1, false); 
+                batalhar(inimigos[2]); 
+                textoAto(1, true);
+                break;
+
+            case 2:
+                textoAto(2, false);
+                batalhar(inimigos[7]); 
+                textoAto(2, true);
+                break;
+
+            case 3:
+                textoAto(3, false);
+                for (int i = 0; i < (jogador.getLvl() + 2); i++) {
+                    inimigos[8].lvlUp();
+                }
+                batalhar(inimigos[8]);
+                textoAto(3, true);
+                System.out.println("\n=== FIM DO JOGO ===");
+                System.exit(0);
+                break;
+
+            default:
+                System.out.println("Você já completou toda a história!");
+        }
+    }
     private void status() {
         System.out.println("Status do Jogador:");
         System.out.println("Nome: " + jogador.getNome());
@@ -258,16 +292,61 @@ public class Jogo {
         jogador.getInventario().useItem(jogador, itemPos);
     }
 
-    public void textoAto(int ato ) {
-        if (ato == 1) {
-            System.out.println("Placeholder");
-        } else if (ato == 2) {
-            System.out.println("Placeholder ato 2");
-        } else {
-            System.out.println("Placeholder ato 3");
-        }
-    }
+    public void textoAto(int ato, boolean posBatalha ) {
+    System.out.println("----------------------------------------------");
 
+                        // ===== ATO 1 =====
+        if (ato == 1 && !posBatalha) {
+            System.out.println("ATO 1 - A FLORESTA\n");
+            System.out.println(
+                "Você se encontra em uma floresta.\n" +
+                "Houveram rumores de que existe uma criatura vagando por aqui.\n" +
+                "O vento sopra forte, e o som das árvores te deixa inquieto.\n" +
+                "Mais à frente, você escuta barulhos dentro de uma abertura nas árvores...\n\n" +
+                "Você sente que algo te observa nas sombras."
+            );
+        } else if (ato == 1 && posBatalha) {
+            System.out.println(
+                "Após uma intensa batalha, você derrota o vampiro.\n" +
+                "Com ele, encontra um mapa antigo que revela a localização da base dos cultistas."
+            );
+        }
+
+                        // ===== ATO 2 =====
+        else if (ato == 2 && !posBatalha) {
+            System.out.println("ATO 2 - O RITUAL DOS CULTISTAS\n");
+            System.out.println(
+                "Seguindo as pistas do mapa, você chega à base dos cultistas.\n" +
+                "O ar é denso e o som de cânticos ecoa pelos corredores subterrâneos.\n" +
+                "Você sente uma energia sombria pulsando ao seu redor..."
+            );
+        } else if (ato == 2 && posBatalha) {
+            System.out.println(
+                "Mesmo ferido, o cultista consegue concluir o ritual.\n" +
+                "Um portal se abre diante de você, sugando tudo ao redor.\n" +
+                "Você é arrastado para dentro — direto para a caverna do Lich."
+            );
+        }
+
+                          // ===== ATO 3 =====
+        else if (ato == 3 && !posBatalha) {
+            System.out.println("ATO 3 - A LAIR DO LICH\n");
+            System.out.println(
+                "Você desperta em uma caverna escura e fria.\n" +
+                "No chão, uma pedra cintilante emite uma energia misteriosa.\n" +
+                "Ao tocá-la, você sente seu corpo ser envolto por uma aura poderosa.\n\n" +
+                "Avançando pela caverna, você sente o poder do Lich te observando..."
+            );
+        } else if (ato == 3 && posBatalha) {
+            System.out.println(
+                "O Lich cai diante de você, sua essência se desfaz em poeira.\n" +
+                "A esfera de energia se desfaz, e o mundo finalmente está a salvo.\n" +
+                "Parabéns, herói — sua jornada chega ao fim!"
+            );
+        }
+
+    System.out.println("----------------------------------------------");
+    }
     public void batalhar(Inimigo inimigo) {
         if (inimigo.getHp() <= 0) {
             System.out.println(inimigo.getNome() + " já está derrotado.");
@@ -324,7 +403,35 @@ public class Jogo {
                     } else {
                         System.out.println("Ação inválida. Você perde seu turno.");
                     }
-                } else if (classe == 3) {
+                } else if (classe == 2) {
+                    System.out.println("Escolha sua ação:");
+                    System.out.println("[1] Ataque físico");
+                    System.out.println("[2] Usar habilidade");
+                    System.out.println("[3] Listar habilidades");
+                    System.out.println("[4] Usar item");
+                    System.out.println("[5] Tentar fugir");
+                    int acao = scanner.nextInt();
+                    scanner.nextLine();
+                    if (acao == 1) {
+                        jogador.atacar(inimigo);
+                    } else if (acao == 2) {
+                        int op = scanner.nextInt();
+                        ((Arqueiro) jogador).habilidade(inimigo, op);
+                    } else if (acao == 3) {
+                        System.out.println("Listando habilidades...");
+                        ((Arqueiro) jogador).listaSpellArq();
+                        acaoLista = true;
+                    }
+                    else if (acao == 4) {
+                        usarItem();
+                        break;
+                    } else if (acao == 5) {
+                        fugiu = fugir();
+                        inimigo.atacar(jogador);
+                    } else {
+                        System.out.println("Ação inválida. Você perde seu turno.");
+                    }
+                }else if (classe == 3) {
                     System.out.println("Escolha sua ação:");
                     System.out.println("[1] Ataque físico");
                     System.out.println("[2] Usar habilidade");
@@ -353,7 +460,6 @@ public class Jogo {
                         System.out.println("Ação inválida. Você perde seu turno.");
                     }
                 }
-
                 System.out.println("============================================================================");
                 if (this.classe == 1) {
                     System.out.println("||HP - " + this.jogador.getNome() + ": " + jogador.getHp() + " | HP - "
