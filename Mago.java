@@ -34,7 +34,7 @@ public class Mago extends Personagem {
         Spell spell = chooseSpell(op);
         String nome = spell.getNome();
         int rolls = spell.getRolls();
-        
+
         System.out.println(this.nome + " lançou " + nome + ".");
         if (!verifMana(spell)) {
             System.out.println("Sem mana para castar o feitiço.");
@@ -50,9 +50,10 @@ public class Mago extends Personagem {
                     manaRecuperada += dice.roll();
                     this.setMana(getMana() + manaRecuperada);
                 }
-                
+
                 System.out.println(
-                        this.nome + " recuperou " + manaRecuperada + " de mana e agora tem " + this.getMana() + " de mana.");
+                        this.nome + " recuperou " + manaRecuperada + " de mana e agora tem " + this.getMana()
+                                + " de mana.");
                 break;
 
             case "Perturbação da Alma":
@@ -64,26 +65,49 @@ public class Mago extends Personagem {
                 break;
 
             case "Demônio Escarlate":
-                if (this.getHp() < this.getMaxHp()* 0.1 && medit) {
-                    rolls = 4;
-                    dano = rollDie(spell, rolls) + atk;
-                    alvo.setHp(alvo.getHp() - dano);
-                } else if (this.getHp() < this.getHp() * 0.1 && !medit) {
+
+                boolean lowHp = this.getHp() <= this.getMaxHp() * 0.10;
+                boolean meditated = medit;
+
+                double danoBase = 0;
+                if (lowHp && meditated) {
+                    dice.setSides(spell.getSides2()); 
+                    for (int i = 0; i < 4; i++)
+                        danoBase += dice.roll();
+                    dice.setSides(spell.getSides()); 
+                    for (int i = 0; i < 4; i++)
+                        danoBase += dice.roll();
+                    dano = (danoBase + this.getAtk()) * 2; 
+                    double cura = dano * 0.20;
+                    this.setHp(Math.min(this.getHp() + cura, this.getMaxHp()));
+                } else if (lowHp) {
                     dice.setSides(spell.getSides2());
-                    rolls = 4;
-                    for (int i = 0; i < rolls; i++) {
-                        dano += dice.roll();
-                    }
-                    dano += atk;
+                    for (int i = 0; i < 4; i++)
+                        danoBase += dice.roll();
+                    dano = danoBase + this.getAtk();
                     dano -= alvo.getDef();
-                    this.setHp(dano * 0.2);
-                    alvo.setHp(alvo.getHp() - dano);
+                    if (dano < 0)
+                        dano = 0;
+                    double cura = dano * 0.20;
+                    this.setHp(Math.min(this.getHp() + cura, this.getMaxHp()));
+                } else if (meditated) {
+                    dice.setSides(spell.getSides());
+                    for (int i = 0; i < 4; i++)
+                        danoBase += dice.roll();
+                    dano = danoBase + this.getAtk();
+                    dano -= alvo.getDef();
+                    if (dano < 0)
+                        dano = 0;
                 } else {
-                    if (verifMana(spell)) {
-                        dano = calcDmgDef(spell, rolls, alvo);
-                        alvo.setHp(alvo.getHp() - dano);
-                    }
+                    dice.setSides(spell.getSides());
+                    for (int i = 0; i < spell.getRolls(); i++)
+                        danoBase += dice.roll();
+                    dano = danoBase + this.getAtk();
+                    dano -= alvo.getDef();
+                    if (dano < 0)
+                        dano = 0;
                 }
+                alvo.setHp(alvo.getHp() - dano);
                 break;
 
             case "Barragem de Esmeraldas":
@@ -147,10 +171,11 @@ public class Mago extends Personagem {
                 if (verifMana(spell)) {
                     setSides(spell);
                     dano = calcDmgDef(spell, rolls, alvo);
-                    
+
                     alvo.setHp(alvo.getHp() - dano);
                 } else {
-                    System.out.println(this.getNome() + " não tem mana suficiente para lançar " + spell.getNome() + ".");
+                    System.out
+                            .println(this.getNome() + " não tem mana suficiente para lançar " + spell.getNome() + ".");
                 }
                 break;
         }
