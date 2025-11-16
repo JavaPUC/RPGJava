@@ -33,7 +33,7 @@ public class Inimigo extends Personagem {
             dano = 0;
         }
         alvo.setHp(alvo.getHp() - dano);
-        System.out.println(alvo.getNome() + " recebeu " + dano + ".");
+    System.out.println(alvo.getNome() + " recebeu " + String.format("%.2f", dano) + ".");
     }
 
     @Override
@@ -53,7 +53,7 @@ public class Inimigo extends Personagem {
             dano = 0;
         }
         alvo.setHp(alvo.getHp() - dano);
-        System.out.println(alvo.getNome() + " recebeu " + dano + ".");
+    System.out.println(alvo.getNome() + " recebeu " + String.format("%.2f", dano) + ".");
     }
 
     @Override

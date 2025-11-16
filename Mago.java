@@ -21,10 +21,10 @@ public class Mago extends Personagem {
     @Override
     public void atacar(Personagem alvo) {
         System.out.println(this.nome + " ataca" + alvo.getNome() + "com um ataque corpo-a-corpo.");
-        dice.setSides(4);
-        dano = dice.roll() + this.getAtk();
+        dice.setSides(2);
+        dano = dice.roll() + (this.getAtk()/2);
         alvo.setHp(alvo.getHp() - dano);
-        System.out.println(alvo.getNome() + " recebeu " + dano + ".");
+    System.out.println(alvo.getNome() + " recebeu " + String.format("%.2f", dano) + ".");
     }
 
     @Override
@@ -40,6 +40,7 @@ public class Mago extends Personagem {
             System.out.println("Sem mana para castar o feitiço.");
             return;
         }
+        System.out.println(this.nome + " lançou " + nome + ".");
         switch (nome) {
             case "Meditação":
                 medit = true;
@@ -60,7 +61,7 @@ public class Mago extends Personagem {
                 System.out.println(
                         this.nome + " lançou Perturbação da Alma, ignorando a defesa de " + alvo.getNome() + ".");
                 dano = dice.roll() + atk;
-                System.out.println(alvo.getNome() + " recebeu " + dano + " de dano.");
+                System.out.println(alvo.getNome() + " recebeu " + String.format("%.2f", dano) + " de dano.");
                 alvo.setHp(alvo.getHp() - dano);
                 break;
 
@@ -179,7 +180,7 @@ public class Mago extends Personagem {
                 }
                 break;
         }
-        System.out.println("Causou " + dano + " de dano.");
+    System.out.println("Causou " + String.format("%.2f", dano) + " de dano.");
     }
 
     public void listaSpell() {

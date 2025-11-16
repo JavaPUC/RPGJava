@@ -104,8 +104,9 @@ public abstract class Personagem {
         this.setDef(this.getDef() * this.multLvlUp);
         this.setMana((int)(Math.floor(this.getMana() * this.multLvlUp)));
         System.out.println(this.nome + " subiu para o nível " + this.lvl + "!");
-        System.out.println(
-                "Status - Hp: " + this.getHp() + "\nAtk: " + this.getAtk() + "\nDef: " + this.getDef() + "\nMana: " + this.getMana());
+    System.out.println(String.format(
+        "Status - Hp: %.2f\nAtk: %.2f\nDef: %.2f\nMana: %d",
+        this.getHp(), this.getAtk(), this.getDef(), this.getMana()));
     }
     public abstract void habilidade(Personagem alvo, int op); //interação com op para ataques que usam magia ou habilidades especiais.
     public abstract void atacar(Personagem alvo); //ataque físico padrão.

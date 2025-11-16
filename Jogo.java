@@ -57,20 +57,20 @@ public class Jogo {
                     setJogador(new Mago(nome));
                     System.out.println("Você escolheu - Mago.");
                     System.out.println("Status inicial:");
-                    System.out.println("HP: " + jogador.getHp() + "/" + jogador.getMaxHp());
+                    System.out.println(String.format("HP: %.2f/%.2f", jogador.getHp(), jogador.getMaxHp()));
                     System.out.println("Mana: " + ((Mago) jogador).getMana());
-                    System.out.println("Atk: " + jogador.getAtk());
-                    System.out.println("Def: " + jogador.getDef());
+                    System.out.println(String.format("Atk: %.2f", jogador.getAtk()));
+                    System.out.println(String.format("Def: %.2f", jogador.getDef()));
                     escolhaValida = true;
                     break;
                 case 2:
                     setJogador(new Arqueiro(nome));
                     System.out.println("Você escolheu - Arqueiro.");
                     System.out.println("Status inicial:");
-                    System.out.println("HP: " + jogador.getHp() + "/" + jogador.getMaxHp());
+                    System.out.println(String.format("HP: %.2f/%.2f", jogador.getHp(), jogador.getMaxHp()));
                     System.out.println("Mana: " + jogador.getMana());
-                    System.out.println("Atk: " + jogador.getAtk());
-                    System.out.println("Def: " + jogador.getDef());
+                    System.out.println(String.format("Atk: %.2f", jogador.getAtk()));
+                    System.out.println(String.format("Def: %.2f", jogador.getDef()));
                     escolhaValida = true;
                     break;
                 case 3:
@@ -145,7 +145,7 @@ public class Jogo {
     private void explorar() {
 
         System.out.println("Você está explorando...");
-        int evento = random.nextInt(1000);
+        int evento = random.nextInt(1000000);
         if (evento == 1) {
             System.out.println("Você encontrou um Globin!");
             batalhar(inimigos[1]);
@@ -162,7 +162,7 @@ public class Jogo {
                 if (abrir == 1) {
                     System.out.println("Você abriu a bolsa e encontrou uma armadilha! Você perdeu 5 de HP.");
                     jogador.setHp(jogador.getHp() - 5);
-                    System.out.println("Agora você tem " + jogador.getHp() + " de HP.");
+                    System.out.println("Agora você tem " + String.format("%.2f", jogador.getHp()) + " de HP.");
                 } else {
                     System.out.println("Você decidiu não abrir a bolsa.");
                 }
@@ -204,7 +204,7 @@ public class Jogo {
                     case 1: {
                         System.out.println("Você caiu em uma armadilha! Que pena.");
                         jogador.setHp(jogador.getHp() - 10);
-                        System.out.println("Você perdeu 10 de HP e agora tem " + jogador.getHp() + " de HP.");
+                        System.out.println("Você perdeu 10 de HP e agora tem " + String.format("%.2f", jogador.getHp()) + " de HP.");
                         break;
                     }
                     case 2: {
@@ -275,7 +275,7 @@ public class Jogo {
             System.out.println("Você escolheu o caminho da direita. Algo perigoso acontece...");
             System.out.println("Você caiu em uma armadilha! Que pena.");
             jogador.setHp(jogador.getHp() - 10);
-            System.out.println("Você perdeu 10 de HP e agora tem " + jogador.getHp() + " de HP.");
+            System.out.println("Você perdeu 10 de HP e agora tem " + String.format("%.2f", jogador.getHp()) + " de HP.");
         } else {
             System.out.println("Escolha inválida.");
         }
@@ -333,9 +333,9 @@ public class Jogo {
         System.out.println("Nome: " + jogador.getNome());
         System.out.println("Nível: " + jogador.getLvl());
         System.out.println("XP: " + jogador.getXp() + "/100");
-        System.out.println("HP: " + jogador.getHp() + "/" + jogador.getMaxHp());
-        System.out.println("Atk: " + jogador.getAtk());
-        System.out.println("Def: " + jogador.getDef());
+    System.out.println(String.format("HP: %.2f/%.2f", jogador.getHp(), jogador.getMaxHp()));
+    System.out.println(String.format("Atk: %.2f", jogador.getAtk()));
+    System.out.println(String.format("Def: %.2f", jogador.getDef()));
         System.out.println("Mana: " + jogador.getMana());
     }
 
@@ -400,16 +400,19 @@ public class Jogo {
     private void display(Personagem jogador, Personagem inimigo) {
         System.out.println("============================================================================");
         if (this.classe == 1) {
-            System.out.println("||HP - " + jogador.getNome() + ": " + jogador.getHp() + " / " + jogador.getMaxHp()
-                    + " | HP - " + inimigo.getNome() + ": " + inimigo.getHp() + " / " + inimigo.getMaxHp() + " || ");
+            System.out.println(String.format("||HP - %s: %.2f / %.2f | HP - %s: %.2f / %.2f || ",
+                    jogador.getNome(), jogador.getHp(), jogador.getMaxHp(),
+                    inimigo.getNome(), inimigo.getHp(), inimigo.getMaxHp()));
             System.out.println("||Mana -" + jogador.getNome() + ": " + ((Mago) jogador).getMana());
         } else if (this.classe == 2) {
-            System.out.println("||HP - " + jogador.getNome() + ": " + jogador.getHp() + " / " + jogador.getMaxHp()
-                    + " | HP - " + inimigo.getNome() + ": " + inimigo.getHp() + " / " + inimigo.getMaxHp() + " || ");
+            System.out.println(String.format("||HP - %s: %.2f / %.2f | HP - %s: %.2f / %.2f || ",
+                    jogador.getNome(), jogador.getHp(), jogador.getMaxHp(),
+                    inimigo.getNome(), inimigo.getHp(), inimigo.getMaxHp()));
             System.out.println("||Mana - " + jogador.getNome() + ": " + ((Arqueiro) jogador).getMana());
         } else if (this.classe == 3) {
-            System.out.println("||HP - " + jogador.getNome() + ": " + jogador.getHp() + " / " + jogador.getMaxHp()
-                    + " | HP - " + inimigo.getNome() + ": " + inimigo.getHp() + " / " + inimigo.getMaxHp() + " || ");
+            System.out.println(String.format("||HP - %s: %.2f / %.2f | HP - %s: %.2f / %.2f || ",
+                    jogador.getNome(), jogador.getHp(), jogador.getMaxHp(),
+                    inimigo.getNome(), inimigo.getHp(), inimigo.getMaxHp()));
             System.out.println("||Raiva -" + jogador.getNome() + ": " + ((Guerreiro) jogador).getRage());
             System.out.println("||Mana -" + jogador.getNome() + ": " + ((Guerreiro) jogador).getMana());
         } else {
@@ -419,6 +422,9 @@ public class Jogo {
     }
 
     public boolean batalhar(Inimigo inimigo) {
+        if (jogador instanceof Mago) {
+            jogador.setMana(500); //permite overflow de mana durante combate, mas reseta no começo da próxima batalha
+        }
         if (inimigo.getHp() <= 0) {
             inimigo.setHp(inimigo.getMaxHp());
         }

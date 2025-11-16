@@ -50,7 +50,7 @@ public class Guerreiro extends Personagem {
         dice.setSides(4);
         dano = dice.roll() + this.getAtk() + getRage();
         alvo.setHp(alvo.getHp() - dano);
-        System.out.println(alvo.getNome() + " recebeu " + dano + ".");
+    System.out.println(alvo.getNome() + " recebeu " + String.format("%.2f", dano) + ".");
         if (rageCheck()) {
             setRage(getRage() + 5);
         } else {
@@ -86,7 +86,7 @@ public class Guerreiro extends Personagem {
                 dice.setSides(spell.getSides());
                 System.out.println(this.nome + " está atacando " + alvo.getNome() + " com RAIVA.");
                 dano = dice.roll() + atk + this.getRage();
-                System.out.println(alvo.getNome() + " recebeu " + dano + " de dano.");
+                System.out.println(alvo.getNome() + " recebeu " + String.format("%.2f", dano) + " de dano.");
                 alvo.setHp(alvo.getHp() - dano);
                 this.setRage(0);
                 break;
@@ -141,8 +141,9 @@ public class Guerreiro extends Personagem {
         this.def += this.def * this.multLvlUp;
         this.mana += this.mana * this.multLvlUp;
         System.out.println(this.nome + " subiu para o nível " + this.lvl + "!");
-        System.out.println(
-                "Status - Hp: " + this.hp + "\nAtk: " + this.atk + "\nDef: " + this.def + "\nMana: " + this.mana);
+    System.out.println(String.format(
+        "Status - Hp: %.2f\nAtk: %.2f\nDef: %.2f\nMana: %d",
+        this.hp, this.atk, this.def, this.mana));
     }
 
     public double rollDie(SpellGue spell, int rolls) {

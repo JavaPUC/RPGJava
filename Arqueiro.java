@@ -47,7 +47,7 @@ public class Arqueiro extends Personagem {
         dice.setSides(6);
         dano = dice.roll() + this.getAtk() + (this.foco * 0.1);
         alvo.setHp(alvo.getHp() - dano);
-        System.out.println(alvo.getNome() + " recebeu " + dano + " de dano à distância!");
+    System.out.println(alvo.getNome() + " recebeu " + String.format("%.2f", dano) + " de dano à distância!");
         setFoco(this.foco + 10);
     }
 
@@ -68,7 +68,7 @@ public class Arqueiro extends Personagem {
             case "Tiro Preciso":
                 dano = dice.roll() + this.getAtk() * 1.5 + (this.foco * 0.2);
                 alvo.setHp(alvo.getHp() - dano);
-                System.out.println(alvo.getNome() + " sofreu " + dano + " de dano crítico!");
+                System.out.println(alvo.getNome() + " sofreu " + String.format("%.2f", dano) + " de dano crítico!");
                 setFoco(this.foco - 30);
                 break;
 
@@ -78,14 +78,14 @@ public class Arqueiro extends Personagem {
                     dano += dice.roll() + (this.getAtk() * 0.8);
                 }
                 alvo.setHp(alvo.getHp() - dano);
-                System.out.println(this.nome + " dispara várias flechas causando " + dano + " de dano total!");
+                System.out.println(this.nome + " dispara várias flechas causando " + String.format("%.2f", dano) + " de dano total!");
                 setFoco(this.foco + 20);
                 break;
 
             case "Armadilha Explosiva":
                 dano = dice.roll() * 2 + this.getAtk();
                 alvo.setHp(alvo.getHp() - dano);
-                System.out.println("A armadilha explode! " + alvo.getNome() + " leva " + dano + " de dano e perde 10 de DEF temporariamente!");
+                System.out.println("A armadilha explode! " + alvo.getNome() + " leva " + String.format("%.2f", dano) + " de dano e perde 10 de DEF temporariamente!");
                 alvo.setDef(alvo.getDef() - 10);
                 break;
         }
@@ -122,7 +122,8 @@ public class Arqueiro extends Personagem {
         this.def *= this.multLvlUp;
         this.mana *= this.multLvlUp;
         System.out.println(this.nome + " subiu para o nível " + this.lvl + "!");
-        System.out.println(
-                "Status - Hp: " + this.hp + "\nAtk: " + this.atk + "\nDef: " + this.def + "\nMana: " + this.mana);
+    System.out.println(String.format(
+        "Status - Hp: %.2f\nAtk: %.2f\nDef: %.2f\nMana: %d",
+        this.hp, this.atk, this.def, this.mana));
     }
 }
