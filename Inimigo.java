@@ -44,7 +44,7 @@ public class Inimigo extends Personagem {
     @Override
     public void habilidade(Personagem alvo, int op) {
         op = 1;
-        System.out.println(this.getNome() + " ataca" + alvo.getNome() + "com um ataque mais forte.");
+        System.out.println(this.getNome() + " ataca" + alvo.getNome() + " com um ataque mais forte.");
         dice.setSides(6);
         dano = dice.roll() + this.getAtk();
         dano = dano + (dice.roll() + this.getAtk());
