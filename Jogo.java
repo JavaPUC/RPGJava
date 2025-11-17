@@ -7,11 +7,12 @@ public class Jogo {
     private Random random;
     private Scanner scanner;
     private Inimigo[] inimigos;
+    private Dice dice = new Dice(20);
     boolean canFightBoss = false;
     private int ato = 0;
 
     private int cbt = 50;
-    private int trap = 20;
+    private int trap = 5;
     private int none = 20;
     private int decision = 10;
 
@@ -204,7 +205,8 @@ public class Jogo {
                     case 1: {
                         System.out.println("Você caiu em uma armadilha! Que pena.");
                         jogador.setHp(jogador.getHp() - 10);
-                        System.out.println("Você perdeu 10 de HP e agora tem " + String.format("%.2f", jogador.getHp()) + " de HP.");
+                        System.out.println("Você perdeu 10 de HP e agora tem " + String.format("%.2f", jogador.getHp())
+                                + " de HP.");
                         break;
                     }
                     case 2: {
@@ -222,7 +224,7 @@ public class Jogo {
     }
 
     private int sorteiaSubEvento() {
-        int total = cbt + trap + none + decision;
+        int total = cbt + trap + none + decision; // 50 + 5 + 20 + 10 = 85
         if (total <= 0) {
 
             return random.nextInt(4);
@@ -242,8 +244,9 @@ public class Jogo {
 
     private boolean fugir() {
         System.out.println("Tentando fugir...");
-        int chance = random.nextInt(100);
-        if (chance < 50) {
+        int roll = dice.roll();
+        System.out.println("Você rolou: " + roll);
+        if (roll > 14) {
             System.out.println("Você conseguiu fugir.");
             return true;
         } else {
@@ -275,7 +278,13 @@ public class Jogo {
             System.out.println("Você escolheu o caminho da direita. Algo perigoso acontece...");
             System.out.println("Você caiu em uma armadilha! Que pena.");
             jogador.setHp(jogador.getHp() - 10);
-            System.out.println("Você perdeu 10 de HP e agora tem " + String.format("%.2f", jogador.getHp()) + " de HP.");
+            if (jogador.getHp() <= 0) {
+                jogador.setHp(0);
+                System.out.println("Você morreu ao cair na armadilha.");
+                System.exit(0);
+            }
+            System.out
+                    .println("Você perdeu 10 de HP e agora tem " + String.format("%.2f", jogador.getHp()) + " de HP.");
         } else {
             System.out.println("Escolha inválida.");
         }
@@ -333,9 +342,9 @@ public class Jogo {
         System.out.println("Nome: " + jogador.getNome());
         System.out.println("Nível: " + jogador.getLvl());
         System.out.println("XP: " + jogador.getXp() + "/100");
-    System.out.println(String.format("HP: %.2f/%.2f", jogador.getHp(), jogador.getMaxHp()));
-    System.out.println(String.format("Atk: %.2f", jogador.getAtk()));
-    System.out.println(String.format("Def: %.2f", jogador.getDef()));
+        System.out.println(String.format("HP: %.2f/%.2f", jogador.getHp(), jogador.getMaxHp()));
+        System.out.println(String.format("Atk: %.2f", jogador.getAtk()));
+        System.out.println(String.format("Def: %.2f", jogador.getDef()));
         System.out.println("Mana: " + jogador.getMana());
     }
 
@@ -344,6 +353,11 @@ public class Jogo {
         jogador.getInventario().lista();
         System.out.println("Digite a posição do item que deseja usar:");
         int itemPos = scanner.nextInt();
+        if (itemPos == 3) {
+            if (jogador.getMana() > 200) {
+                jogador.setMana(200);
+            }
+        }
         jogador.getInventario().useItem(jogador, itemPos);
     }
 
@@ -422,8 +436,9 @@ public class Jogo {
     }
 
     public boolean batalhar(Inimigo inimigo) {
-        if (jogador instanceof Mago) {
-            jogador.setMana(500); //permite overflow de mana durante combate, mas reseta no começo da próxima batalha
+        if (jogador instanceof Mago && jogador.getMana() > 200) {
+            jogador.setMana(200); // permite overflow de mana durante combate, mas reseta no começo da próxima
+                                  // batalha
         }
         if (inimigo.getHp() <= 0) {
             inimigo.setHp(inimigo.getMaxHp());

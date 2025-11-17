@@ -11,7 +11,7 @@ public class Mago extends Personagem {
         setDef(10);
         setXp(0);
         setLvl(1);
-        setMana(200);
+        setMana(300);
         this.multLvlUp = 1.5;
         this.grimorio = new Spelllist();
         this.inventario = new Inventario();

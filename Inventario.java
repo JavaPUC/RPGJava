@@ -12,7 +12,7 @@ public class Inventario implements Cloneable {
         }
         for (Item item : items) {
             System.out.println(
-                    "Posição:" + item.getId() + ", Nome: " + item.getNome() + ", Quantidade: " + item.getQtd());
+                    "Posição:" + item.getId() + ", Nome: " + item.getNome() + ", Descrição: " + item.getDescricao() + "Quantidade: " + item.getQtd());
         }
     }
 
