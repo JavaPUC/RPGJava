@@ -1,4 +1,4 @@
-public abstract class Personagem {
+public abstract class Personagem implements Cloneable{
     protected String nome;
     protected double hp;
     protected double maxHp;
@@ -110,7 +110,15 @@ public abstract class Personagem {
     }
     public abstract void habilidade(Personagem alvo, int op); //interação com op para ataques que usam magia ou habilidades especiais.
     public abstract void atacar(Personagem alvo); //ataque físico padrão.
-    public abstract void addToInv(Item item);
+    
+    public void addToInv(Item item) {
+        try {
+            Item clonedItem = (Item) item.clone();
+            this.inventario.addItem(clonedItem);
+        } catch (CloneNotSupportedException e) {
+            System.err.println("Cloning not supported for item: " + e.getMessage());
+        }
+    }
 
 
 }

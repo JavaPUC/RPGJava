@@ -12,7 +12,8 @@ public class Inventario implements Cloneable {
         }
         for (Item item : items) {
             System.out.println(
-                    "Posição:" + item.getId() + ", Nome: " + item.getNome() + ", Descrição: " + item.getDescricao() + "Quantidade: " + item.getQtd());
+                    "Posição:" + item.getId() + ", Nome: " + item.getNome() + ", Descrição: " + item.getDescricao()
+                            + "Quantidade: " + item.getQtd());
         }
     }
 
@@ -115,5 +116,17 @@ public class Inventario implements Cloneable {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        if (this.items == null || this.items.length == 0) {
+            return new Inventario();
+        }
+        Item[] clonedItems = new Item[this.items.length];
+        for (int i = 0; i < this.items.length; i++) {
+            clonedItems[i] = (Item) this.items[i].clone();
+        }
+        return new Inventario(clonedItems);
     }
 }

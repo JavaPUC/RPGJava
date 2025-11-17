@@ -1,4 +1,4 @@
-public class Item{
+public class Item implements Cloneable {
     private int id;
     private String nome;
     private String descricao;
@@ -52,6 +52,7 @@ public class Item{
     public void qtdDown() {
         setQtd(getQtd() - 1);
     }
+
     public Item(int id, String nome, String descricao, String effect, int qtd) {
         setId(id);
         setNome(nome);
@@ -64,9 +65,14 @@ public class Item{
         System.out.println("Balls of Steel");
     }
 
-
-    @Override 
+    @Override
     public int hashCode() {
         return id;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+
+        return new Item(this.id, this.nome, this.descricao, this.effect, this.qtd);
     }
 }

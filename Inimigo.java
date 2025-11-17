@@ -10,6 +10,7 @@ public class Inimigo extends Personagem {
     public void setId(int id) {
         this.id = id;
     }
+
     public Inimigo(int id, String nome, double hp, double atk, double def, int lvl) {
         setId(id);
         setNome(nome);
@@ -20,7 +21,8 @@ public class Inimigo extends Personagem {
         setXp(0);
         setLvl(lvl);
         this.multLvlUp = 1.5;
-        
+        this.inventario = new Inventario();
+
     }
 
     @Override
@@ -33,7 +35,7 @@ public class Inimigo extends Personagem {
             dano = 0;
         }
         alvo.setHp(alvo.getHp() - dano);
-    System.out.println(alvo.getNome() + " recebeu " + String.format("%.2f", dano) + ".");
+        System.out.println(alvo.getNome() + " recebeu " + String.format("%.2f", dano) + ".");
     }
 
     @Override
@@ -48,12 +50,12 @@ public class Inimigo extends Personagem {
         dice.setSides(6);
         dano = dice.roll() + this.getAtk();
         dano = dano + (dice.roll() + this.getAtk());
-         dano = dano - alvo.getDef();
+        dano = dano - alvo.getDef();
         if (dano < 0) {
             dano = 0;
         }
         alvo.setHp(alvo.getHp() - dano);
-    System.out.println(alvo.getNome() + " recebeu " + String.format("%.2f", dano) + ".");
+        System.out.println(alvo.getNome() + " recebeu " + String.format("%.2f", dano) + ".");
     }
 
     @Override
@@ -62,7 +64,7 @@ public class Inimigo extends Personagem {
         this.setHp(this.getHp() * this.multLvlUp);
         this.setMaxHp(this.getHp());
         this.setAtk(this.getAtk() * this.multLvlUp);
-        this.setMana((int)(Math.floor(this.getMana() * this.multLvlUp)));
+        this.setMana((int) (Math.floor(this.getMana() * this.multLvlUp)));
     }
 
     /*
@@ -77,5 +79,4 @@ public class Inimigo extends Personagem {
      * Boss ???
      */
 
-    
 }

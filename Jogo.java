@@ -104,6 +104,20 @@ public class Jogo {
         this.inimigos[7] = new Inimigo(8, "Cultista", 60, 12, 5, lvl + 5);
         this.inimigos[8] = new Inimigo(9, "Lich", 300, 25, 25, 10);
 
+
+        try {
+
+            this.inimigos[0].addToInv(new Item(3, "Moeda de Ouro", "Uma moeda brilhante de ouro.", "money", 10));
+
+            this.inimigos[2].addToInv(new Item(1, "Poção de Vida", "Restaura 50 pontos de vida.", "restoreHp", 1));
+
+            this.inimigos[7].addToInv(new Item(2, "Poção de Mana", "Restaura 50 pontos de mana.", "restoreMana", 1));
+
+            this.inimigos[8].addToInv(new Item(3, "Moeda de Ouro", "Uma moeda brilhante de ouro.", "money", 200));
+        } catch (Exception e) {
+
+        }
+
         System.out.println("Bem-vindo ao RPG!");
         boolean jogando = true;
 
@@ -224,7 +238,7 @@ public class Jogo {
     }
 
     private int sorteiaSubEvento() {
-        int total = cbt + trap + none + decision; // 50 + 5 + 20 + 10 = 85
+        int total = cbt + trap + none + decision; 
         if (total <= 0) {
 
             return random.nextInt(4);
@@ -437,8 +451,8 @@ public class Jogo {
 
     public boolean batalhar(Inimigo inimigo) {
         if (jogador instanceof Mago && jogador.getMana() > 200) {
-            jogador.setMana(200); // permite overflow de mana durante combate, mas reseta no começo da próxima
-                                  // batalha
+            jogador.setMana(200); // permite overflow de mana durante combate, mas reseta no começo da próxima batalha
+                           
         }
         if (inimigo.getHp() <= 0) {
             inimigo.setHp(inimigo.getMaxHp());
@@ -565,6 +579,7 @@ public class Jogo {
             return false;
         } else {
             System.out.println("Inimigo derrotado!");
+            saquear(inimigo);
             if (jogador.getXp() + inimigo.getLvl() * 20 >= 100) {
                 jogador.lvlUp();
             } else {
@@ -574,6 +589,53 @@ public class Jogo {
                 System.out.println("XP atual: " + jogador.getXp() + "/100");
             }
             return true;
+        }
+    }
+
+    private void saquear(Inimigo inimigo) {
+        Inventario invInimigo = inimigo.getInventario();
+        if (invInimigo == null || invInimigo.isEmpty()) {
+            return;
+        }
+        Item[] itens = invInimigo.getItems();
+        boolean dropouAlgo = false;
+        System.out.println("Vasculhando o inimigo derrotado...");
+        for (Item it : itens) {
+            if (it == null || it.getQtd() <= 0)
+                continue;
+
+            if (random.nextBoolean()) {
+                try {
+                    Item copia = (Item) it.clone();
+
+                    int qtdDrop;
+                    if (copia.getId() == 3) { 
+                        qtdDrop = Math.min(50, it.getQtd());
+                    } else {
+                        qtdDrop = 1;
+                        if (qtdDrop > it.getQtd())
+                            qtdDrop = it.getQtd();
+                    }
+                    if (qtdDrop <= 0)
+                        continue;
+                    copia.setQtd(qtdDrop);
+                    jogador.addToInv(copia);
+                    System.out.println("Você saqueou: " + copia.getNome() + " x" + qtdDrop);
+                    dropouAlgo = true;
+                } catch (CloneNotSupportedException e) {
+    
+                    int qtdDrop = (it.getId() == 3) ? Math.min(50, it.getQtd()) : Math.min(1, it.getQtd());
+                    if (qtdDrop > 0) {
+                        Item novo = new Item(it.getId(), it.getNome(), it.getDescricao(), it.getEffect(), qtdDrop);
+                        jogador.addToInv(novo);
+                        System.out.println("Você saqueou: " + novo.getNome() + " x" + qtdDrop);
+                        dropouAlgo = true;
+                    }
+                }
+            }
+        }
+        if (!dropouAlgo) {
+            System.out.println("Nada útil foi encontrado.");
         }
     }
 
